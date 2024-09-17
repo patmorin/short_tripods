@@ -18,25 +18,6 @@
 \usepackage{thm-restate}
 
 
-% etoolbox allows for robust commands that don't need \protect, e.g.
-% \newrobustcmd{\onesub}{\mathord{\includegraphics{figs/one-sub}}}
-% \subsection{Approximate Voronoi Diagrams in $G^{\onesub}_k$}
-\usepackage{etoolbox}
-
-% david proposes the following additions
-\renewcommand{\ge}{\geqslant}
-\renewcommand{\le}{\leqslant}
-\renewcommand{\geq}{\geqslant}
-\renewcommand{\leq}{\leqslant}
-
-\newcommand{\david}[1]{{\color{orange} David: #1}}
-\newcommand{\vida}[1]{{\color{DarkGreen} Vida: #1}}
-\newcommand{\pat}[1]{\textcolor{Blue}{Pat: #1}}
-\newcommand{\gwen}[1]{\textcolor{Purple}{Gwen: #1}}
-\newcommand{\piotr}[1]{\textcolor{red}{Piotr: #1}}
-
-% \numberwithin{equation}{lem}
-
 
 \newenvironment{clmproof}{\noindent\emph{Proof of Claim:}}{\hfill\rule{1ex}{1ex}}
 
@@ -46,7 +27,7 @@
 \setlength{\linenumbersep}{2em}
 % \linenumbers
 % \rightlinenumbers
-% \linenumbers
+\linenumbers
 \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
  \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
  \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
@@ -91,40 +72,31 @@
 \DeclareMathOperator{\tw}{tw}
 \DeclareMathOperator{\pw}{pw}
 \DeclareMathOperator{\bw}{bw}
-\DeclareMathOperator{\td}{td}
-%\DeclareMathOperator{\rtw}{rtw}
-\DeclareMathOperator{\diam}{diam}
-\DeclareMathOperator{\mindist}{min-dist}
+\DeclareMathOperator{\spn}{span}
 \DeclareMathOperator{\dist}{dist}
-\DeclareMathOperator{\ld}{ld}
-\DeclareMathOperator{\polylog}{polylog}
-\DeclareMathOperator{\evol}{Evol}
-\DeclareMathOperator{\ivol}{Ivol}
-\DeclareMathOperator{\tvol}{Tvol}
-\newcommand{\NN}{\mathbb{N}}
-\newcommand{\GG}{\mathcal{G}}
+\DeclareMathOperator{\depth}{depth}
 
 
 % \DeclareMathOperator{\deg}{deg}
 
-\title{\MakeUppercase{\boldmath Geometric Intersection Graphs and Blowups of Bounded Pathwidth Graphs}}
+\title{\MakeUppercase{\boldmath A Stubby Product Structure Theorem for Planar Graphs}}
 
 %\title{\MakeUppercase{\boldmath Planar graphs are contained in $\tilde{O}(\sqrt{n})$-blowups of fans}}
 
 %Fan-Partitions of Planar Graphs (and Beyond)  \newline by Local Sparsification and Volume-Preserving Embeddings}}
 
-\author{TBD}
- % Vida Dujmovi{\'c}\,\footnote{School of Computer Science and Electrical Engineering, University of Ottawa, Ottawa, Canada (\texttt{vida.dujmovic@uottawa.ca}). Research supported by NSERC and a University of Ottawa Research Chair.}
- % \qquad
+\author{
+ Vida Dujmovi{\'c}\,\footnote{School of Computer Science and Electrical Engineering, University of Ottawa, Ottawa, Canada (\texttt{vida.dujmovic@uottawa.ca}). Research supported by NSERC and a University of Ottawa Research Chair.}
+ \qquad
  % Gwena\"el Joret\footnote{D\'epartement d'Informatique, Universit\'e libre de Bruxelles, Belgium ({\tt gwenael.joret@ulb.be}). G.\ Joret is supported by the Belgian National Fund for Scientific Research (FNRS) and by the Australian Research Council.}
  % \qquad
  % Piotr Micek\footnote{Department of Theoretical Computer Science, Jagiellonian University, Kraków, Poland (\texttt{piotr.micek@uj.edu.pl}). Research supported
  % the National Science Center of Poland under grant UMO-2018/31/G/ST1/03718 within the BEETHOVEN program.}
  % \qquad
- % Pat Morin\footnote{School of Computer Science, Carleton University, Ottawa, Canada (\texttt{morin@scs.carleton.ca}). Research supported by NSERC and the Ontario Ministry of Research and Innovation.}
+ Pat Morin\footnote{School of Computer Science, Carleton University, Ottawa, Canada (\texttt{morin@scs.carleton.ca}). Research supported by NSERC and the Ontario Ministry of Research and Innovation.}
  % \qquad
  % David~R.~Wood\footnote{School of Mathematics, Monash University, Melbourne, Australia (\texttt{david.wood@monash.edu}). Research supported by the Australian Research Council.}
- % }
+ }
 
 \date{}
 
@@ -133,251 +105,149 @@
 
 \maketitle
 
-\section{An Overly-Complicated Approach}
-
-
-Before doing something overly-complicated, here is an easy result:
-
-\begin{thm}\label{easy}
-  Let $G$ be an $n$-vertex subgraph of $H\boxtimes P$ where $\tw(H)\le t$ and $P$ is a path.  Then $G$ is a $\sqrt{n}$-blowup of a graph of treewidth at most $t+1$.
-\end{thm}
-
-\begin{proof}[Proof Sketch]
-  Let $\langle L_i:i\in\N\rangle$ be the natural layering of $G$.  For each $i\in\{0,\ldots,\sqrt{n}-1\}$, let $X_i:=\bigcup_{j\in\N}L_{i+j\sqrt{n}}$.  Since $X_0,\ldots,X_{\sqrt{n}}$ is a partition of $V(G)$, there exists some $i$ such that $|X_i|\le\sqrt{n}$.  Then each component of $G-X_i$ is isomorphic to a subgraph of $kH\boxtimes P_{\sqrt{n}}\subseteq H\boxtimes K_{\sqrt{n}}$, where $kH$ denotes $k\ge 1$ vertex-disjoint copies of $H$. Therefore $G$ is isomorphic to a subgraph of $(kH+\{x\})\boxtimes K_{\sqrt{n}}$, where ${}+{}$ denotes the complete join, so that $x$ is an apex vertex (used to represent the set $X_i$). The graph $kH+\{x\}$ has treewidth $t+1$.
-\end{proof}
-
-
-\Cref{easy} is a bit unsatisfactory, because of the following result:
-\begin{thm}\label{star_partition}
-  Let $G$ be a graph of treewidth $t$.  Then $G$ is isomorphic to a subgraph of a $\sqrt{tn}$-blowup of a star.
-\end{thm}
-
-\Cref{star_partition} implies that, for any $k$, $H\boxtimes P_k$ is isomorphic to a $O(\sqrt{ktn})$-blowup of a star.  In particular, the treewidth of the blown-up graph (a star) does not depend on $t$.  Can we obtain a similar result for $H\boxtimes P$ where the blown-up graph has treewidth bounded indepedently of $t$ and the blowup factor is $f(t)\sqrt{n}$?  Here is an easy to prove lemma that I thought was helpful for working with tree decompositions:
-
-\begin{lem}\label{tree_boundary}
-  Let $T$ be a tree and $S\subseteq V(T)$ such that, for each component $C$ of $T-S$, $|N_T(V(C))|\le 2$.  Then, for any $v\in V(T-S)$, there exists $v'$ such that, for each component $C$ of $T-(S\cup\{v,v'\})$, $|N_T(V(C))|\le 2$.
-\end{lem}
-
-\begin{proof}
-  Let $C$ be the component of $T-S$ that contains $v$. If $|N_T(V(C))|\le 1$ then there is nothing to do.  Otherwise, let $P_{xy}$ be the path in $T$ between the two vertices $x,y$ in $N_T(V(C))$.  Let $P_{vv'}$ be the path in $T$ from $v$ to $V(P_{xy})$.  (Possibly $v'=v$, which happens when $v\in V(P_{xy})$.)  If $v'=v$, then $x$ and $y$ are in different components of $C-(S\cup\{v\})$ so, for each component $C'$ of $C-\{v\}$, $N_T(C')\subseteq\{v,x\}$ or $N_T(V(C'))\subseteq\{v,y\}$.  Otherwise, each of $x$, $y$, and $v$ is in a different component of $C-\{v'\}$ so, for each component$C'$ of $C-\{v,v'\}$, $N_T(V(C'))\subseteq\{v',x\}$, $N_T(V(C'))\subseteq\{v',y\}$, or $N_T(V(C'))\subseteq\{v',v\}$.
-\end{proof}
-
-\Cref{tree_boundary} is useful when we are constructing a separator $S$ of $G$ using bags from a tree decomposition of $G$.  It shows that by doubling the number of bags we can ensure that, for each component $C$ of $G-S$, $N_G(V(C))$ is contained in at most two bags of the tree decomposition.
-
-
-
-
-
-For a graph $G$, let $\mathdefin{|G|}:=|V(G)|$ denote the \defin{order} of $G$.  For a function $f:\N\to\R$, we say that a graph $G$ admits $f$-separators if, for every subgraph $G'$ of $G$, there exists $S\subseteq V(G')$ with $|S|\le f(|G'|)$ and such that each component of $G'-S$ has at most $|G'|/2$ vertices.
-
-\begin{thm}[Dvorak and Norin]\label{dvorak_norin}
-  For every graph $G$ that admits $f$-separators, every subgraph $G'$ of $G$ has treewidth at most $16f(|G'|)$.
-\end{thm}
-
-\begin{thm}[??]\label{density_bound}
-  For every $c,\epsilon >0$ there exists $d$ such that, for every graph $G$ that admits $cn^{1-\epsilon}$-separators and every subgraph $G'$ of $G$, $|E(G')|\le d|G'|$.
-\end{thm}
-
-\begin{lem}\label{degree_bounder}
-  For every $c,\epsilon >0$ there exists $d$ such that, for every graph $G$ that admits $cn^{1-\epsilon}$-separators and every $Y\subseteq V(G)$, there exists $X\subseteq V(G)$, $X\supseteq Y$, $|X|\le 2|Y|$ such that $|N_G(v)\cap X|\le 2d$ for each $v\in V(G-X)$ and $|N_{G[X]}(x)|\ge 2d$ for each $x\in X\setminus Y$.
-\end{lem}
-
-\begin{proof}
-  Let $d$ be the constant from \cref{density_bound}.
-  Start with $X:=Y$ and, as long as there exists $x\in V(G-X)$ with $|N_G(x)\cap X|\ge 2d$, add $x$ to $X$.  If this process does not stop before $|X|=2|Y|+1$, then $|E(G[X])|> 2d(|Y|+1)=d|X|+d$.  This contradicts \cref{density_bound}.
-\end{proof}
-
-For simplicity, we focus on graphs that admit $O(\sqrt{n})$-separators.  The following lemma has a lot of bells and whistles (namely properties (c) and (d)) that we don't really make use of, but I thought it might help to write them all down in case they're helpful later.
-
-\begin{lem}\label{recursive_separator}
-  For every $c>0$ there exists $c_1,c_2,d>0$ such that for every $n$-vertex graph $G$ that admits $c\sqrt{n}$-separators and every $p\in\{0,1,\ldots,\log_2 n\}$ there exists a sequence of pairwise-disjoint subsets $S_0,\ldots,S_{p+1}$ of $V(G)$ with $S_0:=S_{p+1}:=\emptyset$ such that, for each $i\in\{0,\ldots,p\}$ and each component $C$ of $G-(\bigcup_{j=0}^i S_j)$,
-  \begin{compactenum}[(a)]
-    \item $|V(C)|\le n/2^i$,
-    \item $|V(C)\cap S_{i+1}|\le c_2\sqrt{n/2^i}$,
-    \item $|N_G(V(C))|\le c_1\sqrt{n/2^i}$,
-    \item for each $v\in V(C)$, $|N_G(v)\setminus V(C)|\le d$
-  \end{compactenum}
-\end{lem}
-
-\begin{proof}[Proof reminder]
-  We use the shorthands $S_{\le i}:=\bigcup_{j=0}^i S_i$ and $S_{<i}:=S_{\le i-1}$.  The proof is by induction on $p$.  The base case $p=0$ is trivial.  Now suppose $p\ge 1$.
-
-  By the inductive hypothesis, there exists sets $S_0,\ldots,S_{p-1},S_{p}$ with $S_0:=S_p:=\emptyset$ that satisfy the conditions (a)--(d) for each $i\in\{0,\ldots,p-1\}$ and each component of $C$ of $G-S_{\le i}$. Let $S_{p+1}:=\emptyset$.  We will now add elements to $S_p$ so that $S_0,\ldots,S_{p+1}$ satisfy the conditions of the lemma.
-
-  For each component $B$ of $G-S_{<p}$, we will define a set $S_B\subseteq V(C)$ and define $S_p$ to be the union of $S_B$ over all components $B$ in $G-S_{<p}$. Each such set $S_B$ will be chosen so that each component of $B-S_B$ satisfies (a), (c), and (d).  In order to satisfy (b) we will ensure that $|S_B|\le c_2\sqrt{n/2^{p-1}}$.
-
-  \paragraph{Ensuring (a):}
-  Fix some component $B$ of $G-S_{<p}$. By assumption $|B|\le n/2^{i-1}$.  If $|B|\le n/2^i$ then set $S_B:=\emptyset$.  In this case, $B$ satisfies (a), (b), and (d), but not necessarily (c) since the inductive hypothesis only guarantees that $|N_G(B)| \le c_1\sqrt{n/2^{p-1}}$ and we must ensure that $|N_G(V)|\le c_1\sqrt{n/2^p}$.  We will correct this later. If $n/2^p < |B| \le n/2^{p-1}$ then, since $G$ has $c\sqrt{n}$-separators, there exists $S_C\subseteq V(C)$ of size at most $c\sqrt{|B|}\le c\sqrt{n/2^{i-1}}
-  %\le \sqrt{2}c\sqrt{n/2^i}
-  $ so that each component of $B-S_B$ has at most $|B|/2\le n/2^{p}$ vertices.
-  % Add vertices to $S_C$ using \cref{degree_bounder} so that any vertex not in $S_C$ is adjacent to at most $2d$ vertices in $S_C$.  Now $|S_C|\le 2\sqrt{2}c\sqrt{n/2^{i}}$.
-  By doing this for each component $B$ of $G-S_{<p}$ we obtain a (not yet complete) set $S_{p}:=\bigcup_B S_B$ such that each component $C$ of $G-S_{\le p}$ satisfies (a).  We will now add $O(\sqrt{n/2^p})$ additional vertices to each $S_B$ to ensure that (c) and (d) are satisfied, but this can never violate (a).
-
-  At this point $|S_B|\le c\sqrt{n/2^{p-1}}$ for each component $B$ of $S_{<p}$.
-
-
-  % As long as $c_1$ contains a vertex $v$ that is adjacent to more than $d$ vertices in $N_G(V(c_1))$ then add $v$ to $S_C$.  If this increases the size of $S_C$ by a factor of more than $2$, then $G[S_C]$ has $d|S_C|/2$ edges.  For sufficiently large $d$, this violates \cref{density_bound}.
-
-  \paragraph{Ensuring (c):}
-  Let $B$ be a component of $G-S_{<p}$ and let $C_1,\ldots,C_r$ be components of $B-S_B$.
-  \[
-      \left|\bigcup_{i=1}^r N_G(V(C_i))\right|\le |N_G(V(B))|+|S_B| \le c_1\sqrt{n/2^{p-1}}+c\sqrt{n/2^{p-1}} = (c_1+c)\sqrt{n/2^{p-1}} \enspace .
-  \]
-  If $\left|\bigcup_{i=1}^r N_G(V(C_i))\right| \ge (c_1/2)\sqrt{n/2^p}$ then we will add elements to $S_B$ to ensure that each component of $B-S_B$ satisfies (c), with space left over so that we can add additional vertices to satisfy (d).  Consider the graph $B^+:=G[N_G[V(B)]]$, which has $|B|+|N_G(B)|\le n/2^{p-1} + c_1\sqrt{n/2^{i-1}}$ vertices.  By \cref{dvorak_norin}, $B^+$ has treewidth less than $16c\sqrt{|V(C^+)|} < 17c\sqrt{n/2^{p-1}}$.\todo{Add some condition on $n,c,p$}  Therefore, there exists $S_{B^+}\subseteq V(S_{B^+})$ of size at most $10(\tw(B^+)+1)\le 170c\sqrt{n/2^{p-1}}$ such that each component of $B^+-S_{B^+}$ contains at most $\tfrac{1}{10}(|N_G(B)|+|S_B|)\le \tfrac{1}{10}(c_1+c)\sqrt{n/2^{p-1}}$ vertices of $N_G(V(B))\cup S_B$.  Add $S_{B^+}\cap V(B)$ to $S_B$.  Since each component $C$ of $B-S_B$ is contained in some component of $B^+-S_{B^+}$,
-  \[
-   |N_G(V(C))| \le \tfrac{1}{10}(c_1+c)\sqrt{n/2^{p-1}} + |S_{B^+}|
-   \le \tfrac{1}{10}(c_1+1701c)\sqrt{n/2^{p-1}}
-   = \tfrac{\sqrt{2}}{10}(c_1+1701c)\sqrt{n/2^{p}} \enspace .
-  \]
-  Taking $c_1\ge \sqrt{2}\cdot3402c/(10-(2\sqrt{2}/10))$ ensures that $|N_G(V(C))|\le (c_1/2)\sqrt{n/2^p}$.
-
-  At this point $|S_B|\le 171c\sqrt{n/2^{p-1}}$.
-
-  \paragraph{Ensuring (d):}
-
-  For each component $B$ of $G-S_{<p}$, apply \cref{degree_bounder} with $Y:=N_G(B)|+|S_B|$ to obtain a set $X$ and define $X_B:=X\cap V(B)$.  Consider some component $C$ of $B-S_B$.  We claim that $|X_B\cap V(C)|\le |N_G[V(C)]|$.  Indeed, the graph $G[N_G(V(C))\cup (X_B\cap V(C))]$ has at least $2d|X_B\cap V(C)|$ edges and has $|N_G(V(C))|+|X_B\cap V(C)|$ vertices, which violates \cref{density_bound} when $|X_B\cap V(C)|>|N_G(V(C))|$.  Therefore, $|X_B\cap V(C)|\le |N_G(V(C))|\le (c_1/2)\sqrt{n/2^p}$. For a component $C'$ of $C-(X_B\cap V(C))$, $|N_G(C')|\le |N_G(C)|+ |X_B\cap V(C)| \le c_1\sqrt{n/2^p}$.
-
-  Now, add $X_B$ to $S_B$ to obtain our final set $S_B$. From the discussion in the preceding paragraph, each component of $B-S_B$ satisfies (c). The addition of $X_B$ also ensures that each component of $B-S$ satisfies (d).
-
-  At this point, $|S_B| \le 342c\sqrt{n/2^{p-1}}$
-  Therefore each component $B$ of $G_{<p}$ has $|V(B)\cap S_p|=|S_B|\le c_2\sqrt{n/2^{p-1}}$ for $c_2\ge \sqrt{2}\cdot 342c$. Therefore each component $B$ of $G-{S_{\le p-1}}$ satisfies (b).
-\end{proof}
-
-
-\begin{lem}\label{product_partition}
-  Let $G$ be an $n$-vertex subgraph of $H\boxtimes P$ where $\tw(H)\le t$ and $P$ is a path.  Then there exists $S_1,\ldots,S_p$ satisfying the conditions of \cref{recursive_separator} as well the following condition:
-  \begin{compactenum}[(a)]\setcounter{enumi}{4}
-    \item For each $i\in\{0,\ldots,p\}$ and each component $C$ of $G-(\bigcup_{j=1}^i S_j)$, $|\{\ell\in\{1,\ldots,i\}:N_G(V(C))\cap S_\ell\neq\emptyset\}|\le {2(t+2)}$.
-  \end{compactenum}
-\end{lem}
-
-\begin{proof}[Proof Idea]
-  Use I-shaped separators of the form $V(H)\times\{p_i\}\cupV(H)\times\{p_j\}\cup B\times\{p_i,\ldots,p_j\}$, where $p_i,\ldots,p_j$ is s subpath of $P$ and $B$ contains two bags in the tree decomposition of $H$.  One of the bags in $B$ is used to make sure that each component has size at most $n/2^i$.  The other bag, obtained using \cref{tree_boundary}, is used to make sure that any component $C$ is contained in a set of the form $V(H')\times \{p_{x+1},\ldots,p_{y-1}\}$ where $H'$ is a connected subgraph of $H$ and $N_H(V(H'))$ is contained in at most two bags in the tree decomposition of $H$.  Then $N_G(V(C))$ can be partitioned into:
-  \begin{compactenum}
-    \item A \defin{top} contained in $V(H)\times p_x$ that is contained in one separator.
-    \item A \defin{bottom} contained in $V(H)\times p_y$ that is contained in one separator.
-    \item An $\defin{$H$-boundary}$ contained in $\{B_1\cup B_2\}\times \{p_{x+1},\ldots,p_{y-1}\}$ where each of $B_1$ and $B_2$ is a bag in the tree decomposition of $H$. Then $B_1$ and $B_2$ contain a total of at most $2(t+1)$ vertices and these are partitioned among at most $2(t+1)$ separators.
-  \end{compactenum}
-  This ensures that the resulting sets $S_0,\ldots,S_{p+1}$ satisfy Property~(e) with ${?}:=2(t+2)$.
-\end{proof}
-
-
-
-\begin{thm}
-  Let $G$ be any $n$-vertex graph that has a vertex partition $S_0,\ldots,S_{p+1}$ with $p:=\lceil\tfrac{1}{2}\log_2 n\rceil$ satisfying Conditions (a), (b), and (e).  Then $G$ has an $H$-partition of width $O(\sqrt{n})$ where $\tw(H)\le {?}$.
-\end{thm}
-
-\begin{proof}
-  % Assume without loss of generality that $G$ is connected. Apply \cref{product_partition} to $G$ with $p:=\lceil \tfrac12\log_2 n\rceil$ to obtain sets $S_0,\ldots,S_{p+1}$.
-  Consider the following partition $\mathcal{P}$ of $V(G)$.  For each $i\in\{1,\ldots,p\}$ and each component of $B$ of $G-S_{< i}$, $\mathcal{P}$ contains the part $P_B:=V(B)\cap S_i$ if and only if $V(B)\cap S_i$ is non-empty. For each $i\in\{1,\ldots,p\}$ and each component $C$ of $G-S_{\le p}$, $\mathcal{P}$ contains the part $P_C:=V(C)$.
-
-  We treat $\mathcal{P}$ as an $H$-partition $\{A_x:x\in V(H)\}$ where $H:=G/\mathcal{P}$ and where $A_x=P_C$ where $x$ is the node of $H$ obtained by contracting $P_C$.  By Property (b), for each component $B$ of $G-S_{<i}$, the part $P_{B}$ has size at most $c_2\sqrt{n/2^{i-1}}\le c_1\sqrt{n}$. By Property (a), each component $C$ of $G-S_{\le p}$, the part $P_C$ has size at most $n/2^p \le \sqrt{n}$.   Thus, the $H$-partition $\mathcal{P}$ has width $O(\sqrt{n})$.\footnote{This is the last time we make use of properties (a) and (b).  Even a weak version of (a) and (b) that only guarantees that (a) $|S_i\cap V(C)|\in O(\sqrt{n})$ for each $i<p$  and each component of $G-S_{\le i}$ and (b) each component of $G-S_{\le p}$ has $O(\sqrt{n})$ vertices is good enough.}
-
-  We now define a tree-decomposition $(B_x:x\in V(T))$ of $H$ whose bags have size at most $1+{?}$, which establishes that $\tw(H)\le {?}$.  Define the rooted tree $T$ with vertex set
-  \[
-    V(T):=\{(C,i): i\in\{0,\ldots,p\},\, \text{$C$ is a component of $G-S_{\le i}$} \}
-  \]
-  The root of $T$ is the node $(G-S_{\le 0},0)=(G,0)$. For each $i\in\{1,\ldots,p\}$ and each component $C$ of $G-S_{\le i}$, the parent of $(C,i)$ is the unique node $(B,i-1)$ such that $V(C)\subseteq V(B)$.
-
-  We now define the contents of the bags in the tree decomposition.  For a node $x:=(C,i)\in V(T)$, the bag $B_{x}$ always contains $P_C$.  Furthermore, $B_x$ contains $P_B$ for each component $B$ such that $x$ has a $T$-ancestor  $y:=(B,j)$ such that $N_G(C)\cap P_B\neq\emptyset$.  By Property (e), the number of vertices of $H$ in $B_x$ is at most $1+{?}$.  We claim that $(B_x:x\in V(T))$ is indeed a tree decomposition of $H$.
-
-
-  Let $bc$ be any edge of $H$. We need to show that some bag $B_x$ contains both $b$ and $c$.  Since $bc\in E(H)$, $G$ contains an edge $vw$ with $v\in A_b$ and $w\in A_c$.  Consider the maximally deep node $(B,j)$ of $T$ such that $v,w\in V(B)$.  Such a node $(B,j)$ exists because $G$ is connected and is unique because the components of $G-S_{\le j}$ are pairwise vertex-disjoint for each $j\in\{0,\ldots,p\}$. Then $P_B$ does not contain both $v$ and $w$ since would imply that $A_b=A_c=P_B$, which would imply $b=c$.  In particular, $(B,j)$ is not a leaf of $T$. Therefore, at least one of $v$ or $w$ is contained in $S_j\cap V(B)$ since otherwise $(B,j)$ is not maximally deep.  At most one of $v$ or $w$ is contained in $S_j\cap V(B)$ since, otherwise both $v$ and $w$ are contained in $P_{B}$ which we have already ruled out.  Suppose without loss of generality that $v\in S_j\cap V(B)$, so $b=P_B=A_b$.  Now consider the maximally deep node $(C,i)$ such that $w\in V(C)$.  Since $w\in V(C)$, $N_G(V(C))\supseteq N_G(w)\supseteq\{v\}$.  Therefore $N_G(V(C))\cap P_B\supseteq\{v\}\neq\emptyset$. By definition, this means that $(C,i)$ contains $P_B$.
-
-  Next we need to show that, for each node $b$ of $H$, the set of nodes bags in $T$ whose bags contain $b$ is connected.  Let $b$ be any node of $H$ and let $P_B:=A_b$.  Consider the maximally deep node $y:=(B,j)$ which is unique by definition. By definition, $B_y$ contains $b=P_B$.  Also by definition, any node $x:=(C,i)$ of $T$ such that $B_x$ contains $P_B$ is a descendant of $y$. Furthermore, if $x\neq y$ then $N_G(C)\cap P_B\neq\emptyset$.  For any node $z:=(D,k)$ on the path from $x$ to $y$ in $T$, $V(C)\subseteq V(D)\subseteq V(B)$ and $P_B\cap V(D)=\emptyset$.  Therefore, $N_G(V(D))\cap P_B\supseteq N_G(V(C))\cap P_B\neq\emptyset$, so $b=P_B$ is contained in $B_z$.  Therefore, for any node $x$ with $b\in B_x$, all the nodes $z$ on the path from $x$ to $y$ have $b\in B_z$.  Therefore, the set of nodes bags in $T$ whose bags contain $b$ is connected.  Therefore $(B_x:x\in V(T))$ is a tree decomposition of $H$ whose width is at most $?$.
-\end{proof}
-
-Remarks: No need to stop at $p=\tfrac12\log n$.  Only the root part needs to have size $O(\sqrt{n})$.  The $I$-shaped separators we get from product structure are special.  For example, the $O(\sqrt{s})$ separators that take a bite of size $s$ can't work [why not?].
-
-\begin{lem}
-  For every $c>0$ there exists $c'>0$ such that any graph $G$ that admits $c\sqrt{n}$-separators contains, for each $k\in\{1,\ldots,|G|/2\}$, a set $B\subseteq V(G)$ with $k/100\le |B|\le 100k$ such that $|N_G(B)|\le c'\sqrt{k}$.
-\end{lem}
-
-\begin{proof}[Proof Sketch]
-  Start with $B_0:=V(G)$.  We maintain the inequality $|N_G(B_i)|\le c'\sqrt{|B_i|}$. To compute $B_i$ from $B_{i-1}$, take a separator $S_i$ of $G_{i-1}:=G[N_G[B_{i-1}]]$ and group the components of $G_{i-1}-S_i$ into a group $B_i$ whose size is between $|G_i|/3$ and $2|G_i|/3$.  If $|N_G(B_i)|> c'\sqrt{|B_i|}$ then take a separator $X_i$ of size $16c\sqrt{|G_i|}$ to break $G_i$ into components each of which is adjacent to at most $|N_G(B_i)|/2+16c\sqrt{|G_i|}$ vertices of $X_i\cup N_G(B_i)$.  Do a calculation similar to the one above to show that this works.
-\end{proof}
-
-
+\begin{abstract}
+  We show that each $n$-vertex planar graph $G$ is isomorphic to a subgraph of the strong product of a graph $H$ of treewidth $3$, a cycle $C$ of length $O(\sqrt{n})$, and a clique $K_c$ of bounded size.  Symbolically, $G\subseteq H\boxtimes C\boxtimes K_c$. This is a variation of the Planar Graph Product Structure Theorem which asserts that $G\subseteq H\boxtimes P\boxtimes K_3$, where $P$ is a path with no non-trivial upper bound on its length.  To the best of our knowledge, this new theorem has no applications!
+\end{abstract}
 
 \section{Introduction}
 
-These are some notes about try to extend the following theorem of Alon from unit disks to arbitrary disks:
-
-\begin{thm}[Alon]\label{alon}
-  For every set $S$ of $n$ disjoint unit discs in the plane, there exists a direction $\alpha$ such that every line parallel to $\alpha$ intersects $O(\sqrt{n\log n})$ discs in $S$.
-\end{thm}
-
-One application of this result is that if $G$ is a unit disc intersection graph with maximum clique size $\omega$, then performing performing a line sweep with lines in direction $\alpha$, this gives an unit-interval graph that contains $G$ and has maximum clique size $O(\omega \sqrt{n\log n})$.  Variations of this for intersection graphs of discs whose radii can be covered by a bounded-size set of intervals of the form $[a,2a]$ show, for example, that such graphs are contained in $O(\omega\sqrt{n\log n})$-blowups for bounded pathwidth graphs, where the pathwidth depends only on the number of intervals needed to cover the radii of the discs.
-
-Of course, \cref{alon} can't be extended to arbitrary sets of disjoint discs because the following arrangement of discs has a point $p$ such that every line that contains $p$ intersects at least $n/6$ of the discs.
-
-\begin{center}
-  \includegraphics{figs/spider}
-\end{center}
-
-One possibility is to do a circle sweep instead. In the bad example above, choosing $p$ to be the center of the figure and sweeping with a circle centered at $p$ gives an interval graph representation with maximum clique size $12$.  In general there is not always a good $p$  If you construct two copies of the preceding example that are very far apart then $p$ will be so far from at least one of them that all circles centered at $p$ basically behave like parallel lines with respect to this copy.
-
-Now that I write this, I see that this example also explains why what I discuss below can't work.  But, here is something I can prove that might help get rid of these kinds of configurations:
-
-\begin{lem}
-  Let $S$ be a set of $n$ disjoint circles and let $p$ be a point such that every line that contains $p$ intersects at least $k$ of the discs in $S$.  Then there exists a disc $D$ centered at $p$ that contains $\Omega(n)$ discs in $S$, that avoids $\Omega(n)$ discs in $S$ and whose boundary intersects $O(n/k)$ discs of $S$.
-\end{lem}
-
-\begin{proof}[Proof reminder]
-  Map each disc in $S$ to an arc on $C(p,1)$ so that a line through $p$ intersects the disc if and only if it also intersects the corresponding arc.  Then, most of the arcs have length $\Omega(1/k)$, which means that the corresponding disc has radius at least $\Omega(1/k)$ times its distance from $p$.  For now, forget about the discs whose arcs have length less than $\epsilon/ k$.  Draw $2/k$ equally spaces rays out of $p$ and associate each disc in $S$ with the ray closest to its center.  Simple packing shows that each circle centered at $p$ intersects $O(1/k)$ discs of the discs we haven't eliminated (a constant number on each ray).  Now argue that the sequence of discs hit by each ray have exponentially increasing radii, so that there are  $\Omega(k)$ disjoint classes of distances of the form $[2^i,2^{i+1}]$.  One of these distances classes contains at most $n/k$ of the discs we forgot about.  Take $D$ to be any disc centered at $p$ whose radius is in this class.
-\end{proof}
-
-Not every bad example looks like this, though.  In the bad example, the discs come in three sets that each cover one third of the possible directions for a sweep line.  Each of these three sets can be translated and scaled arbitrarily and we will still get an example where, for each direction $\alpha$ there is a line paralell to $\alpha$ that intersects at least $n/3$ discs.
 
 
-\paragraph{Old Hope:}
+\section{Background}
 
-Instead, I would like to sweep with a circle whose radius $r$ grows while it's centers simultaneously moves at a speed of $1/2$.  Specifically, let $v$ be a (random) unit vector and let $p$ be any point in the plane, then for each $t\ge 0$, $C_t$ is the circle of radius $t$ centered at the point $p+tv/2$. Then $\{C_t: t\in[0,\infty)\}$ is a family of circles such that $C_{t'}$ contains $C_t$ in its interior for $t'\ge t\ge 0$.  If we can ensure that, for every $t$, $C_t$ intersects $O(\sqrt{n\log n})$ discs in $S$ then this would give a representation of the intersection graph of $S$ as an interval graph of maximum clique size $O(\sqrt{n\log n})$.  The hope is that the proof would also shed some insight into a representation of the intersection graph as the blowup for a bounded pathwidth graph.
-
-The lemma below doesn't quite manage to do this.  It shows that, for a fixed $t$ and a randomly chosen unit vector $v$, $C_t$ intersets $O(\sqrt{n\log n})$ discs in $S$.  It's a theorem of the form, ``for each $t$ and nearly all $v$'' and I want a theorem of the form ``there exists some $v$ such that for all $t$''.  On the positive side, the theorem holds for any starting point $p$.  Maybe choosing $p$ carefully is important.  (Actually, no, see the comment above about two copies of the bad example.)
+A \defin{layering} of a graph $G$ is a sequence of pairwise-disjoint subsets $\mathcal{L}:=L_0,\ldots,L_h$ of $V(G)$ such that $\bigcup_{j=0}^h L_i=V(G)$ and, for each edge $vw$ of $G$, $v\in L_i$ and $w\in L_j$ implies $|j-i|\le 1$.  For a non-empty subset $S\subseteq V(G)$, the \defin{span} of $S$ in $\mathcal{L}$ is $\spn(\mathcal{L},S):=1+\max\{i:S\cap L_i\neq\emptyset\}-\min\{j:S\cap L_i\neq\emptyset\}$.
 
 
-% Still, it's a start, and some of the things that come up in the proof already point towards things that are might be helpful in expressing the intersection graph as a blowup of a bounded pathwidth graph $G$.  For example, for each radius $t$ there are only $\tilde{O}(\sqrt{n})$ discs whose radius is larger than $t/\sqrt{n}$ that intersect $C_t$
+For two graphs $G$ and $A$, an \defin{embedding} of $G$ into $A$ is an injective function $\varphi:V(G)\to V(A)$ such that $\varphi(v)\varphi(w)\in E(A)$ for each $vw\in E(G)$.  When $S$ is a subset of $V(G)$, we use the shorthand $\varphi(S):=\{\varphi(v):v\in S\}$.  In particular, when $vw$ is and edge of $G$, $\varphi(vw)$ is an edge of $A$.  When $G'$ is a subgraph of $G$ we use the shorthand $\varphi(G'):=A[\varphi(V(G'))]$.
 
-\section{A First Lemma}
+We are particularly interested in embeddings into strong products.  Let $H$ be a graph and $P:=y_0,\ldots,y_{n-1}$ be a path and consider the graph $H\boxtimes P$.  For each $i\in[n]$, the vertex set $V(H)\times\{y_i\}$ is called the $i$th \defin{layer} of $H\boxtimes P$ and $\mathcal{L}_P:=\langle V(H)\times\{y_i\} \rangle_{i\in[n]}$ is a layering of $H\boxtimes P$ that we call the \defin{natural layering} of $H\boxtimes P$.
 
-For a point $p\in\R^2$ and a real number $r$, let $\mathdefin{C(p,r)}:=\{q\in\R^2: d_2(p,q)=r\}$ be the circle of radius $r$ centered at $p$ and let $\mathdefin{D(p,r)}:=\{q\in\R^2: d_2(p,q)\le r\}$ be the closed disc of radius $r$ centered at $p$.  Let $\mathbf{0}:=(0,0)$ denote the origin.  For any $0\le r_1\le r_2$, let $\mathdefin{A(p,r_1,r_2)}:=D(p,r_2)\setminus D(p,r_1)\cup C(p,r_1)$ be the closed \defin{$(r_1,r_2)$-annulus} centered at $p$.
+Let $\varphi:V(G)\to H\boxtimes P$ be an embedding of $G$ into $H\boxtimes P$. A vertex $x$ of $H$ is \defin{relevant} to $\varphi$ if there is at least one $(v,i)\in V(G)\times [n]$ such that $\varphi(v)=(x,y_i)$.  We may assume that every vertex of $H$ is relevant to $\varphi$ since, if some vertex $x$ is irrelevant, then $\varphi:V(G)\to (H-\{x\})\boxtimes P$ is an embedding of $G$ into $(H-\{x\})\boxtimes P$. The \defin{span} of a (relevant) vertex $x$ of $H$ is
+\[
+  \spn(\varphi,x):=\spn(\mathcal{L}_P, \varphi(V(G))\cap (\{x\}\times V(P)))
+\]
+In words, if $x$ has span $k$, then all appearances of $x$ in $\varphi(G)$ occur on at most $k$ consecutive layers of $H\boxtimes P$.  The \defin{span} $\spn(\varphi)$ of $\varphi$ is the minimum value $k$ such that each (relevant) vertex of $H$ has span at most $k$.  Let $\mathdefin{C_k}$ denote a cycle of length of $k$.
 
 \begin{lem}
-  Let $S$ be a set of $n$ pairwise-disjoint discs in the plane, and let $v\in C(\mathbf{0},1)$ be a uniformly random unit vector.  Then the expected number of disks in $S$ that intersect $C(v/2,1)$ is $O(\sqrt{n\log n})$.
+  Let $G$ and $H$ be graphs and let $P$ be a path.  If there exists an embedding of $G$ into $H\boxtimes P$ with span at most $k$, then there exists an embedding of $G$ into $H\boxtimes C_k$.
 \end{lem}
-
-In the following proof, we repeatedly use the fact that, for concave increasing $f:\R_\ge 0\to\R$ and non-negative numbers $n_1,\ldots,n_k$ that sum to $n$, the sum $\sum_{i=1}^k f(n_i)$ is maximized when $n_1=\cdots=n_k=n/k$.  That is, $\sum_{i=1}^k f(n_i) \le k\,f(n/k)$.  In particular, we use this for $f(x)=\sqrt{x}$, in which case $\sum_{i=1}^k \sqrt{n_i}\le k\sqrt{n/k}=\sqrt{kn}$.
 
 \begin{proof}
-  The circle $C_i:=C(v/2,1)$ is contained in the disc $D:=(\mathbf{0},3/2)$, so we may assume that every disc in $S$ intersects $D$.  Since the discs in $S$ are pairwise disjoint, a standard packing argument implies that the number of discs of radius at least $1/\sqrt{n}$ that intersect $C(v/2,1)$ is $O(\sqrt{n})$. Therefore, we assume that all discs in $S$ have radius at most $1/\sqrt{n}$.
+  Let $P:=y_0,\ldots,y_{n-1}$ and let $C_k:=y'_0,\ldots,y'_{k-1}$.  For each $v\in V(G)$, if $(x,y_i):=\varphi(v)$ then set $\rho(v):=(x,y'_{i\bmod k})$.  Since $\varphi$ is an injective function and has span $k$, $\rho:V(G)\to V(H\boxtimes C_k)$ is an injective function. By definition, for each edge $(x_1,y_{a})(x_2,y_b)$ of $H\boxtimes P$,  $(x_1,y'_{a\bmod k})(x_2,y'_{b\bmod k})$ is an edge of $H\boxtimes C_k$.  In particular, for each edge $vw$ of $G$, $\varphi(vw)$ is an edge of $H\boxtimes P$, so $\rho(vw)$ is an edge of $H\boxtimes C_k$.  Thus, $\rho$ is an embedding of $G$ into $H\boxtimes C_k$.
+\end{proof}
 
-  For any integer $i\ge 1$, let $r_i=2^{-i}$ and let $S_i$ be the set of discs in $S$ whose radius is in the interval $(r_i,2r_i]$. For each $i\ge 1$, let $n_i:=|S_i|$. Fix some disc $B\in S_i$ with center $c$.  If $B$ intersects $C(v/2,1)$, then $v/2$ is contained in the annulus $A(c,1+2r_i,1-2r_i)$.  Some trigonometry and the inequality $1-\cos(\alpha)\le \alpha^2$ shows that the intersection of $C(\mathbf{0},1/2)$ with $A(c,1+2r_i,1-2r_i)$ is the union of (at most 2) circular arcs, each of length $\Omega(r_i)$ and having total length  $O(\sqrt{r_i})$. Therefore, the probability that $B$ intersects $C(v/2,1)$ is $O(\sqrt{r_i})$.
+For any connected graph $G$ and any vertex $v_0$ of $G$, the sequence $\langle \{v\in V(G):\dist_G(v_0,v)=i\}\rangle_{i\in\N}$ is called the \defin{$v_0$-rooted BFS layering} of $G$.
 
-  % Therefore, the expected number of discs in $S$ of radius at most $r_i$ that intersect $C(v/2,1)$ is $O(n\sqrt{r_i})$.  This quantity is $O(\sqrt{n})$ for $r_i\le 2/n$, so we assume that all discs in $S$ have radius at least $1/n$.  In particular, $S_i$ is empty for all $i \ge \log_2 n$.\todo{Is this necessary?}
 
-  We now push this argument further to consider a set of disks in $S_i$ that each intersect a ray through the origin. Fix a ray $R$ originating at $\mathbf{0}$ and consider the set $S_{i,R}$ of discs in $S_i$ that intersect $R$. Let $n_{i,R}:=|S_{i,r}|$.  Then we can partition $S_{i,R}$ into $\alpha\in O(1)$ sets $S_{i,r,1},\ldots,S_{i,r,\alpha}$ such that, for any $p\in C(\mathbf{0},1/2)$,  $C(p,1)$ intersects at most one disc in $S_{i,R,a}$ for each $a\in[\alpha]$.  Let $n_{i,R,a}:=|S_{i,R,a}|$. For each $a\in[\alpha]$ the union of the $(1+2r_i,1-2r_i)$-annuli centered at the centers of discs in $S_{i,R,a}$ contains a portion of $C(\mathbf{0},1/2)$ whose length is $O(\sqrt{n_{i,R,a}r_i})$.  Therefore, $C(v/2,1)$ intersects at most one disc in $S_{i,R,a}$ and this intersection occurs with probability $O(\sqrt{n_{i,R,a}r_i})$.  Therefore, the expected number of discs in $S_{i,R,a}$ intersected by $C(v/2,1)$ is $O(\sqrt{n_{i,R,a}r_i})$.  Therefore, the expected number of discs in $S_{i,R}$ intersected by $C(v/2,1)$ is
-  \[
-    \sum_{a=1}^\alpha O(\sqrt{n_{i,R,a}r_i}) \subseteq O(\alpha\sqrt{n_{i,R}r_i/\alpha}) = O(\sqrt{\alpha n_{i,R}r_i}) = O(\sqrt{n_{i,R}r_i}) \enspace .
-  \]
-  Define a set of $p\in O(1/r_i)$ rays $R_1,\ldots,R_p$ such that $\bigcup_{\ell=1}^p S_{i,R_\ell}$ covers $S_i$. Remove each disc in $S_i$ from all but one $S_{i,R_j}$ so that $S_{i,R_1},\ldots,S_{i,R_p}$ is a partition of $S_i$.  Then the expected number of discs in $S_i$ intersected by $C(v/2,1)$ is
-  \[
-    \sum_{\ell=1}^p O(\sqrt{n_{i,R_p}r_i}) = O(p\sqrt{nr_i/p}) = O(\sqrt{n_ipr_i}) = O(\sqrt{n_i}) \enspace ,
-  \]
-  since $p\in O(1/r_i)$.
-  Finally, the expected number of discs intersected by $C(v/2,1)$ is
-  \[
-    \sum_{i=1}^{\log_2 n} O(\sqrt{n_i}) = O(\log n\, \sqrt{n/\log n}) = O(\sqrt{n\log n}) \enspace . \qedhere
-  \]
+Let $G$ be a graph.  A sequence $\mathcal{B}:=B_0,\ldots,B_{p-1}$ of non-empty pairwise-disjoint subsets of $V(G)$ whose union is $V(G)$ is called a \defin{blocked vertex insertion order} for $G$. Let $G$ be a plane graph, let $\mathcal{B}:=B_0,\ldots,B_{p-1}$ be a blocked vertex insertion order for $G$ and let $\mathcal{L}$ be a layering of $G$.   The pair $(\mathcal{B},\mathcal{L})$ is a called a \defin{QUACK}.  We say that  the QUACK $(\mathcal{B},\mathcal{L})$ is \defin{$(t,w)$-good} if it satisfies the following conditions:
+\begin{compactenum}[({good}-a)]
+  % \item $v_0\in V(G_0)$;
+  % \item For each $i\in[p]$, $G_i$ is $2$-connected;
+  \item For each $i\in[p]$, the vertices in $B_i$ are all contained in a single face $F_i$ of $G_{i-1}:=G[\bigcup_{j=0}^{i-1} T_i]$;
+  % \item For each $i\in[p]$, $\spn(\mathcal{L},T_i)\le C\sqrt{n}$;
+  \item For each $i\in[p]$ and each $j\in[h]$, $|B_i\cap L_j|\le w$;
+  \item For each $i\in[p]$ and each face $F$ of $G_i:=G[\bigcup_{j=0}^i B_i]$, the index set $I(F):=\{j\in\{0,\ldots,i\}:V(F)\cap T_j\neq\emptyset\}$ has at most $t$ elements;
+  % \item For each $i\in[p]$, each face $F$ of $G_i$, and each $j\in I(F)$,  the vertices in $V(F)\cap T_j$ appear consecutively on the boundary of $F$;
+  % \item For each $i\in[p]$, each face $F$ of $G_i$, and each $j\in I(F)$, $\spn(\mathcal{L},V(F)\cap T_j)\le c\sqrt{n}$.
+\end{compactenum}
+
+\begin{lem}\label{tw_good_quack}
+  If an $n$-vertex plane graph $G$ has a $(t,w)$-good quack, then there exists a graph $H$ of treewidth at most $t$, a path $P:=y_0,\ldots,y_{n-1}$, and an embedding $\varphi$ of $G$ into $(H\boxtimes K_w)\boxtimes P$ such that
+  \begin{compactenum}[(i)]
+    \item for each $i\in[p]$, there exists $x\in V(H)$ such that $\varphi(B_i)\subseteq V(\{x\}\boxtimes K_w)\times V(P)$; and
+    \item for each $j\in[j]$, $\varphi(L_j)\subseteq V(H\boxtimes K_w)\times\{y_j\}$;
+  \end{compactenum}
+\end{lem}
+
+\begin{proof}
+  Copy from linear-time algorithm paper.
+\end{proof}
+
+The QUACK $(\mathcal{B},\mathcal{L})$ is $(t,w,k)$-good if it is $(t,w)$-good and,
+\begin{compactenum}[({good-}a)]\setcounter{enumi}{3}
+  \item for each $i\in[p]$, $\spn(\mathcal{L},B_i)\le k$.
+\end{compactenum}
+
+\begin{lem}
+  If a plane graph $G$ has a $(t,w,k)$-good quack, then there exists a graph $H$ of treewidth at most $t$, a path $P$, and an embedding $\varphi:V(G)\to (H\boxtimes K_w)\boxtimes P$ such that $\spn(\varphi)\le k$.
+\end{lem}
+
+\begin{proof}
+  Follows immediately from properties (i) and (ii) of \cref{tw_good_quack}.
 \end{proof}
 
 
 
 
 
+% A sequence $L_0,\ldots,L_h$ of vertex subsets of $G$ is a \defin{BFS layering} of $G$ if it is a $v_0$-rooted BFS layering of $G$ for some vertex $v_0$ of $G$.
+
+\begin{thm}\label{three_w_csqrtn_quack}
+  There exists a real number $c>0$ such that, for every integer $n\ge 3$, every $n$-vertex triangulation $G$ has $(3,w,c\sqrt{n})$-good quack.
+\end{thm}
+
+
+The proof of \cref{three_w_csqrtn_quack} makes use of the following lemma, whose proof is the subject of \cref{crux_section}.
+
+\begin{lem}\label{awesome_path}
+  There exists constants $\alpha,\beta>0$ such that, for any $n\ge 3$, the following is true.
+  Let $G$ be an $n$-vertex triangulation and let $C$ be a cycle in $G$ whose boundary consists of an edge $vw$ of $G$, a vertex $\lambda$ of $G$, a shortest path $P_v$ from $v$ to $\lambda$ and a shortest path $P_w$ from $w$ to $\lambda$.  Let $G_C$ be the subgraph of $G$ induced by the vertices in $C$ and the vertices of $G$ in the interior of $C$.  Let $s$ and $t$ be any two vertices of $C$ with $\dist(s,\lambda)=\dist(t,\lambda)=:d$.  Then $G_C$ contains a path $Q$ with endpoints $s$ and $t$ such that, for each $i\in\N$,
+    \[  |\{x\in V(Q):\dist_G(x,\lambda)=i\}| \le
+      \begin{cases}
+        0 & \text{if $i < d$} \\
+        \alpha & \text{if $d\le i \le i+\beta\sqrt{n}$} \\
+        0 & \text{if $i > \beta\sqrt{n}$} \\
+      \end{cases}
+    \]
+\end{lem}
+
+\begin{proof}[Proof of \cref{three_w_csqrtn_quack}]
+  We will construct a  $(3,w,c\sqrt{n})$-good quack $(\mathcal{B},\mathcal{L})$.
+  Let $L_0$ be the three vertices on the outer face of $G$ and, for each $i\ge 0$, let $L_i:=\{v\in V(G):\dist_G(v,L_0)=i\}$. The result is a layering $\mathcal{L}:=L_0,\ldots,L_{h-1}$ of $G$. We will construct $\mathcal{B}:=B_0,\ldots,B_{p-1}$ iteratively, beginning with $B_0:=L_0$.  When constructing $B_i$ we will ensure that, in addition to the conditions imposed $(3,w,c\sqrt{n})$-goodness, $B_i$ satisfies the following structural invariants:
+  \begin{compactenum}[({struct}-a)]
+    \item $G_i:=\bigcup_{j=0}^i B_i$ is $2$-connected;
+    % \item $\spn(\mathcal{L},B_i)\le C\sqrt{n}$;
+    \item For each $i\in[p]$, each face $F$ of $G_i$, and each $j\in I(F)$,  the vertices in $V(F)\cap B_j$ appear consecutively on the boundary of $F$;
+    \item For each $i\in[p]$, each face $F$ of $G_i$, and each $j\in I(F)$, $\spn(\mathcal{L},V(F)\cap B_j)\le (c/4)\sqrt{n}$.
+  \end{compactenum}
+
+  Clearly, the set $B_0$ satisifies these requirements, provided that $(c/4)\sqrt{n} \ge 3$ which is satisfied for any $c\ge 4\sqrt{3}$.  The set $B_0$ also satsifies (good-a)--(good-c) and satisfies $\spn(\mathcal{L},B_0)\le c\sqrt{n}$ for any $c\ge \sqrt{3}$.  We now assume that we have already constructed sets $B_0,\ldots,B_{i-1}$ satisfying the requirement of the lemma and show how to construct $B_i$.
+
+  Let $F$ be a face of $G_{i-1}$ that contains at least one vertex of $G$ in its interior.  By (struct-a), $F$ is a cycle in $G$.  We first deal with the (hardest) case, in which $|I(F)|=3$ and then deal with the (degenerate) cases $|I(F)|\in\{1,2\}$.  Treat $F$ as a cycle.  By (struct-a) and (struct-b), the vertices of can be partitioned among three vertex-disjoint paths $P_1$, $P_2$, and $P_3$, each of which is contained in (the cycle) $F$ and such that, for each $\ell\in\{1,2,3\}$,  $V(P_i)\subseteq B_{j_\ell}$ for some $j_\ell\in\{0,\ldots,i\}$.
+
+  Add a dummy vertex $v_0$ in the outer face of $G$ that is adjacent to the three vertices of $L_0$ and call the resulting $(n+1)$-vertex triangulation $G'$.
+  Fix a shortest path tree $T$ of $G'$ rooted at $v_0$, so that $T$ is a spanning tree of $G'$ with $\dist_T(v,v_0)=\dist_{G'}(v,v_0)$ for each $v\in V(G)$.
+
+  Let $G_F$ be the subgraph of $G$ induced by all vertices of $G$ in $F$ and all vertices of $G$ in the interior of the region bounded by $F$.  Since $F$ is a face of $G_{i-1}$, $G[L_0]$ is the outer face of $G$ and $v_0$ is in the outer face of $G$, each vertex $v\in V(G_F)$ has a $T$-ancestor in $V(F)$.  For $v\in V(G_F)$ let $v'$ be the $T$-ancestor of $v$ in $V(F)$ that has maximum depth.   If $v'\in V(P_\ell)$, then define the \defin{colour} of $v$ to be $\ell$.  In this way, each vertex of $G_F$ is a assigned a colour from the set $\{1,2,3\}$.  Property (struct-b) and Sperner's Lemma imply that $G_F$ contains an inner face $\tau_i:=v_1v_2v_3$ for which the colour of $v_i$ is $\ell$, for each $\ell\in\{1,2,3\}$.  For each $\ell\in\{1,2,3\}$, let $Q_i$ be the path in $T$ from $v_\ell$ to the vertex $v_{\ell}'\in V(P_{\ell})$ whose colour determines that of $v_\ell$.
+
+  The construction in \citet{dujmovic.joret.ea:planar} would, at this point, set $B_i:=(V(Q_1)\cup V(Q_2)\cup V(Q_3))\setminus V(F)$.  It is straightforward to verify that $B_i$ satisfies (good-a), (struct-a), and (struct-b).  By the choice of $\tau_i$ and $Q_1,Q_2,Q_3$, each face $F'$ of $G_i$ that is not a face of $G_{i-1}$ is contained in $F$ and avoids at least one of $P_1$, $P_2$, or $P_3$. Therefore, $F'$ avoids at least one of $B_{j_1}$, $B_{j_2}$ or $B_{j_3}$, so $I(F')\subseteq \{j_1,j_2,j_3,i\}$ has size at most $3$. This ensures that $B_i$ satisfies (good-c) with $t=3$.  By construction, $|B_i\cap L_j|=|V(Q_1)\cap L_j| + |V(Q_2)\cap L_j| + |V(Q_3)\cap L_j| \le 3$, so $B_i$ satisfies (good-b) with $w=3$.
+
+  However, setting $B_i:=(V(Q_1)\cup V(Q_2)\cup V(Q_3))\setminus V(F)$ could violate (good-c), since there is no non-trivial upper bound on the length of the paths $Q_1$, $Q_2$, or $Q_3$.  First, observe that each of these paths begins at a vertex of $\tau_i$, whose $T$-depth is in the set $\{d,d+1\}$ for some integer $d$. If each of $Q_1$, $Q_2$, and $Q_3$ contains no more than $c\sqrt{n}$ vertices, then $(V(Q_1)\cup V(Q_2)\cup V(Q_3))\setminus V(F)$ intersects at most $c\sqrt{n}$ layers of $\mathcal{L}$ and we set $B_i:=(V(Q_1)\cup V(Q_2)\cup V(Q_3))\setminus V(F)$ as before.  Otherwise, assume without loss of generality that $|V(Q_1)|=\max\{|V(Q_\ell)|:\ell\in\{1,2,3\}\}\ge c\sqrt{n}$.  Recall that $v_1'$ is the the last vertex in $Q_1$.  Since $v_1'\in V(P_1)$, (struct-c) implies that $\depth_T(v)\le \depth_T(v_1')+(c/4)\sqrt{n}$ for all $v\in V(P_1)$.  Since there is an edge from $P_1$ to $P_2$ and an edge from $P_1$ to $P_3$, (struct-c) therefore implies that $\depth_T(v)\le \depth_T(v_1')+(c/2)\sqrt{n}$ for each $v\in V(F)$. In particular, $\depth_T(v_2'),\depth_T(v_3')\le \depth_T(v_1')+(c/2)\sqrt{n}$.
+
+  % For each $\ell\in\{1,2,3\}$, $Q_\ell$ contains a vertex of depth $d\ge \depth_T(v_1')+c\sqrt{n}\ge \depth_T(v_1')+2(c/2)\sqrt{n}+1$, provided that $(c/2)\sqrt{n}+1\le c\sqrt{n}$, which is satisfied for all $c\ge\sqrt{3}$ and $n\ge 3$.  Therefore, for each $\ell\in\{1,2,3\}$, $Q_\ell$ contains a vertex $v_\ell''$ with $\depth_T(v_\ell'')=\depth_T(v_1')-1-\lceil (c/2)\sqrt{n}\rceil$.
 
 
 
+  Let $\lambda_1$ be the lowest-common $T$-ancestor of $v_1$ and $v_2$.
+  Let $C_1$ be the cycle formed by the edge $v_1v_2$, the path $P_1$ in $T$ from $v_1$ to $\lambda_1$, and the path $P_2$ in $T$ from $v_2$ to $\lambda_1$.  For each $z\in\{1,\ldots,q\}$ and $\ell\in\{1,2,3\}$, let $v_\ell^{(z)}$ be the $T$-ancestor of $v_\ell$ whose $T$-depth is $\depth_T(v_1)+\lceil c\sqrt{n}/2q\rceil$ 
+
+
+
+
+    By \cref{awesome_path}, there exists a path $R_1$ from $v_1''$ to $v_2''$ in  $G_{C_1}$ whose vertices have depths in the interval $[\depth_T(v_1''),\depth_T(v_2'')+\beta\sqrt{n}]$ and that contains at most $\alpha$ vertices from each layer in $\mathcal{L}$.  Define a similar path from $R_2$ from $v_2''$ to $v_3''$, and a path $R_3$ from $v_3''$ to $v_1''$.  Finally, we set
+  \[
+    B_i := \bigcup_{\ell=1}^3 \left( V(R_\ell)\cup V(P_T(v_\ell'',v_\ell')-v_{\ell}')\right)
+  \]
+\end{proof}
+
+
+
+\section{Proof of \cref{crux_lemma}}
+\label{crux_section}
+
+
+\bibliographystyle{plainurlnat}
+\bibliography{short_tripods}
 
 
 \end{document}
