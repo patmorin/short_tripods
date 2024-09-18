@@ -75,6 +75,7 @@
 \DeclareMathOperator{\spn}{span}
 \DeclareMathOperator{\dist}{dist}
 \DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\pth}{path}
 
 
 % \DeclareMathOperator{\deg}{deg}
@@ -202,42 +203,56 @@ The proof of \cref{three_w_csqrtn_quack} makes use of the following lemma, whose
 \end{lem}
 
 \begin{proof}[Proof of \cref{three_w_csqrtn_quack}]
-  We will construct a  $(3,w,c\sqrt{n})$-good quack $(\mathcal{B},\mathcal{L})$.
+  We will construct a  $(3,w,3\beta\sqrt{n})$-good quack $(\mathcal{B},\mathcal{L})$.
   Let $L_0$ be the three vertices on the outer face of $G$ and, for each $i\ge 0$, let $L_i:=\{v\in V(G):\dist_G(v,L_0)=i\}$. The result is a layering $\mathcal{L}:=L_0,\ldots,L_{h-1}$ of $G$. We will construct $\mathcal{B}:=B_0,\ldots,B_{p-1}$ iteratively, beginning with $B_0:=L_0$.  When constructing $B_i$ we will ensure that, in addition to the conditions imposed $(3,w,c\sqrt{n})$-goodness, $B_i$ satisfies the following structural invariants:
   \begin{compactenum}[({struct}-a)]
     \item $G_i:=\bigcup_{j=0}^i B_i$ is $2$-connected;
     % \item $\spn(\mathcal{L},B_i)\le C\sqrt{n}$;
     \item For each $i\in[p]$, each face $F$ of $G_i$, and each $j\in I(F)$,  the vertices in $V(F)\cap B_j$ appear consecutively on the boundary of $F$;
-    \item For each $i\in[p]$, each face $F$ of $G_i$, and each $j\in I(F)$, $\spn(\mathcal{L},V(F)\cap B_j)\le (c/4)\sqrt{n}$.
+    \item For each $i\in[p]$, each face $F$ of $G_i$, and each $j\in I(F)$, $\spn(\mathcal{L},V(F)\cap B_j)\le 2\beta\sqrt{n}$.
   \end{compactenum}
 
-  Clearly, the set $B_0$ satisifies these requirements, provided that $(c/4)\sqrt{n} \ge 3$ which is satisfied for any $c\ge 4\sqrt{3}$.  The set $B_0$ also satsifies (good-a)--(good-c) and satisfies $\spn(\mathcal{L},B_0)\le c\sqrt{n}$ for any $c\ge \sqrt{3}$.  We now assume that we have already constructed sets $B_0,\ldots,B_{i-1}$ satisfying the requirement of the lemma and show how to construct $B_i$.
+  Clearly, the set $B_0$ satisifies (struct-a) and (struct-b). It also satisfies (struct-c) provided that $2\beta\sqrt{n} \ge \spn(\mathcal{L},B_0)=1$ which is satisfied for any $\beta\ge 1/2\sqrt{3}$.  The set $B_0$ also satsifies (good-a)--(good-c) and satisfies $\spn(\mathcal{L},B_0)\le 3\beta\sqrt{n}$.  We now assume that we have already constructed sets $B_0,\ldots,B_{i-1}$ satisfying the requirement of the lemma and show how to construct $B_i$.
 
-  Let $F$ be a face of $G_{i-1}$ that contains at least one vertex of $G$ in its interior.  By (struct-a), $F$ is a cycle in $G$.  We first deal with the (hardest) case, in which $|I(F)|=3$ and then deal with the (degenerate) cases $|I(F)|\in\{1,2\}$.  Treat $F$ as a cycle.  By (struct-a) and (struct-b), the vertices of can be partitioned among three vertex-disjoint paths $P_1$, $P_2$, and $P_3$, each of which is contained in (the cycle) $F$ and such that, for each $\ell\in\{1,2,3\}$,  $V(P_i)\subseteq B_{j_\ell}$ for some $j_\ell\in\{0,\ldots,i\}$.
+  Let $F$ be a face of $G_{i-1}$ that contains at least one vertex of $G$ in its interior.  By (struct-a), $F$ is a cycle in $G$.  We first deal with the (hardest) case, in which $|I(F)|=3$ and then deal with the (degenerate) cases $|I(F)|\in\{1,2\}$.  Treat $F$ as a cycle.  By (struct-a) and (struct-b), the vertices of can be partitioned among three vertex-disjoint paths $P_0$, $P_1$, and $P_2$, each of which is contained in (the cycle) $F$ and such that, for each $\ell\in[3]$,  $V(P_i)\subseteq B_{j_\ell}$ for some $j_\ell\in\{0,\ldots,i\}$.
 
   Add a dummy vertex $v_0$ in the outer face of $G$ that is adjacent to the three vertices of $L_0$ and call the resulting $(n+1)$-vertex triangulation $G'$.
   Fix a shortest path tree $T$ of $G'$ rooted at $v_0$, so that $T$ is a spanning tree of $G'$ with $\dist_T(v,v_0)=\dist_{G'}(v,v_0)$ for each $v\in V(G)$.
 
-  Let $G_F$ be the subgraph of $G$ induced by all vertices of $G$ in $F$ and all vertices of $G$ in the interior of the region bounded by $F$.  Since $F$ is a face of $G_{i-1}$, $G[L_0]$ is the outer face of $G$ and $v_0$ is in the outer face of $G$, each vertex $v\in V(G_F)$ has a $T$-ancestor in $V(F)$.  For $v\in V(G_F)$ let $v'$ be the $T$-ancestor of $v$ in $V(F)$ that has maximum depth.   If $v'\in V(P_\ell)$, then define the \defin{colour} of $v$ to be $\ell$.  In this way, each vertex of $G_F$ is a assigned a colour from the set $\{1,2,3\}$.  Property (struct-b) and Sperner's Lemma imply that $G_F$ contains an inner face $\tau_i:=v_1v_2v_3$ for which the colour of $v_i$ is $\ell$, for each $\ell\in\{1,2,3\}$.  For each $\ell\in\{1,2,3\}$, let $Q_i$ be the path in $T$ from $v_\ell$ to the vertex $v_{\ell}'\in V(P_{\ell})$ whose colour determines that of $v_\ell$.
+  Let $G_F$ be the subgraph of $G$ induced by all vertices of $G$ in $F$ and all vertices of $G$ in the interior of the region bounded by $F$.  Since $F$ is an inner face of $G_{i-1}$, $G[L_0]$ is the outer face of $G$ and $v_0$ is in the outer face of $G$, each vertex $v\in V(G_F)$ has a $T$-ancestor in $V(F)$.  For each $v\in V(G_F)$ let $v'$ be the $T$-ancestor of $v$ in $V(F)$ that has maximum depth.   If $v'\in V(P_\ell)$, then define the \defin{colour} of $v$ to be $\ell$.  In this way, each vertex of $G_F$ is a assigned a colour from the set $[3]$.  Property (struct-b) and Sperner's Lemma imply that $G_F$ contains an inner face $\tau_i:=v_0v_1v_2$ for which the colour of $v_i$ is $\ell$, for each $\ell\in[3]$.  For each $\ell\in[3]$, let $Q_\ell:=\pth_T(v_\ell,v_\ell')$ be the path in $T$ from $v_\ell$ to the vertex $v_{\ell}'\in V(P_{\ell})$ whose colour determines that of $v_\ell$.
 
-  The construction in \citet{dujmovic.joret.ea:planar} would, at this point, set $B_i:=(V(Q_1)\cup V(Q_2)\cup V(Q_3))\setminus V(F)$.  It is straightforward to verify that $B_i$ satisfies (good-a), (struct-a), and (struct-b).  By the choice of $\tau_i$ and $Q_1,Q_2,Q_3$, each face $F'$ of $G_i$ that is not a face of $G_{i-1}$ is contained in $F$ and avoids at least one of $P_1$, $P_2$, or $P_3$. Therefore, $F'$ avoids at least one of $B_{j_1}$, $B_{j_2}$ or $B_{j_3}$, so $I(F')\subseteq \{j_1,j_2,j_3,i\}$ has size at most $3$. This ensures that $B_i$ satisfies (good-c) with $t=3$.  By construction, $|B_i\cap L_j|=|V(Q_1)\cap L_j| + |V(Q_2)\cap L_j| + |V(Q_3)\cap L_j| \le 3$, so $B_i$ satisfies (good-b) with $w=3$.
+  The construction in \citet{dujmovic.joret.ea:planar} would, at this point, set $B_i:=\bigcup_{\ell=0}^2 V(Q_\ell-v_\ell')$.
+  % (This is what \citet{dujmovic.joret.ea:planar} call a \defin{tripod}.)
+  It is straightforward to verify that this choice of $B_i$ satisfies (good-a), (struct-a), and (struct-b).  By the choice of $\tau_i$ and $Q_0,Q_1,Q_2$, each face $F'$ of $G_i$ that is not a face of $G_{i-1}$ is contained in $F$ and avoids at least one of $P_0$, $P_1$, or $P_2$. Therefore, $F'$ avoids at least one of $B_{j_0}$, $B_{j_1}$ or $B_{j_2}$. Therefore $I(F')\subseteq \{j_0,j_1,j_2,i\}$ and does not contain at least one of $j_0$, $j_1$, or $j_2$, so $|I(F')|\le 3$, which ensures that $B_i$ satisfies (good-c) with $t=3$.  For any $j\in\N$, $|B_i\cap L_j|=\bigcup_{\ell=0}^2|V(Q_\ell)\cap L_j|\le 3$, so $B_i$ satisfies (good-b) with $w=3$.
 
-  However, setting $B_i:=(V(Q_1)\cup V(Q_2)\cup V(Q_3))\setminus V(F)$ could violate (good-c), since there is no non-trivial upper bound on the length of the paths $Q_1$, $Q_2$, or $Q_3$.  First, observe that each of these paths begins at a vertex of $\tau_i$, whose $T$-depth is in the set $\{d,d+1\}$ for some integer $d$. If each of $Q_1$, $Q_2$, and $Q_3$ contains no more than $c\sqrt{n}$ vertices, then $(V(Q_1)\cup V(Q_2)\cup V(Q_3))\setminus V(F)$ intersects at most $c\sqrt{n}$ layers of $\mathcal{L}$ and we set $B_i:=(V(Q_1)\cup V(Q_2)\cup V(Q_3))\setminus V(F)$ as before.  Otherwise, assume without loss of generality that $|V(Q_1)|=\max\{|V(Q_\ell)|:\ell\in\{1,2,3\}\}\ge c\sqrt{n}$.  Recall that $v_1'$ is the the last vertex in $Q_1$.  Since $v_1'\in V(P_1)$, (struct-c) implies that $\depth_T(v)\le \depth_T(v_1')+(c/4)\sqrt{n}$ for all $v\in V(P_1)$.  Since there is an edge from $P_1$ to $P_2$ and an edge from $P_1$ to $P_3$, (struct-c) therefore implies that $\depth_T(v)\le \depth_T(v_1')+(c/2)\sqrt{n}$ for each $v\in V(F)$. In particular, $\depth_T(v_2'),\depth_T(v_3')\le \depth_T(v_1')+(c/2)\sqrt{n}$.
+  However, setting $B_i:=\bigcup_{\ell=0}^2 V(Q_\ell-v_\ell')$ could violate (good-c) and (struct-c), since there is no non-trivial upper bound on the length of the paths $Q_0$, $Q_1$, or $Q_2$.  We now explain the modifications needed to fix this.  First, observe that each of $Q_0$, $Q_1$, and $Q_2$ begins at a vertex of $\tau_i$.  Since $\tau_i$ is a clique, its vertices have $T$-depth in $\{d,d+1\}$ for some integer $d$. If each of $Q_0$, $Q_1$, and $Q_2$ contains no more than $2\beta\sqrt{n}$ vertices, then $\spn(\mathcal{L},\bigcup_{\ell=0}^2 V(Q_\ell-v_\ell'))\le 2\beta\sqrt{n}$, so it satisfies (good-c) and (struct-c). In this case, we set $B_i:=\bigcup_{\ell=0}^2 V(Q_\ell-v_\ell')$ as before.
+
+  Otherwise, assume without loss of generality that $|V(Q_1)|=\max\{|V(Q_\ell)|:\ell\in[3]\}\ge 2\beta\sqrt{n}$.  Since $v_1'\in V(P_1)$, (struct-c) implies that $\depth_T(v)\le \depth_T(v_1')+2\beta\sqrt{n}-1$ for each $v\in V(P_1)$.
+  % Since there is an edge of $G$ from $P_0$ to $P_1$ and an edge of $G$ from $P_0$ to $P_2$, (struct-c) therefore implies that $\depth_T(v)\le \depth_T(v_1')+4\beta\sqrt{n}-2$ for each $v\in V(F)$. In particular, $\depth_T(v_1'),\depth_T(v_2')\le \depth_T(v_0')+4\beta\sqrt{n}-2$.
 
   % For each $\ell\in\{1,2,3\}$, $Q_\ell$ contains a vertex of depth $d\ge \depth_T(v_1')+c\sqrt{n}\ge \depth_T(v_1')+2(c/2)\sqrt{n}+1$, provided that $(c/2)\sqrt{n}+1\le c\sqrt{n}$, which is satisfied for all $c\ge\sqrt{3}$ and $n\ge 3$.  Therefore, for each $\ell\in\{1,2,3\}$, $Q_\ell$ contains a vertex $v_\ell''$ with $\depth_T(v_\ell'')=\depth_T(v_1')-1-\lceil (c/2)\sqrt{n}\rceil$.
 
 
+  Let $Q_1'$ be obtained from $Q_1$ by removing all vertices of depth greater than $\depth_T(v_1')+3\beta\sqrt{n}$.
+  % Our set $B_i$ will contain $V(Q_1')$. Of course, this is not enough, since $Q_0'$, $Q_1'$, and $Q_2'$ may not separate the interior of $F$ in a way that maintains (good-c) [or (struct-a)--(struct-c) for that matter].
+  % From this point on all subscripts on $Q$, $Q'$, $P$, and $v$ are implicitly taken modulo $3$.
+  For each $\ell\in[2]$, let $\lambda_\ell$ be the lowest-common $T$-ancestor of $v_\ell$ and $v_{\ell+1}$.
+  Let $C_\ell$ be the cycle formed by the edge $v_\ell v_{\ell+1}$,  $\pth_T(v_\ell,\lambda_\ell)$ and $\pth_T(v_{\ell+1}\lambda_\ell)$\todo{Define this notation}.
 
-  Let $\lambda_1$ be the lowest-common $T$-ancestor of $v_1$ and $v_2$.
-  Let $C_1$ be the cycle formed by the edge $v_1v_2$, the path $P_1$ in $T$ from $v_1$ to $\lambda_1$, and the path $P_2$ in $T$ from $v_2$ to $\lambda_1$.  For each $z\in\{1,\ldots,q\}$ and $\ell\in\{1,2,3\}$, let $v_\ell^{(z)}$ be the $T$-ancestor of $v_\ell$ whose $T$-depth is $\depth_T(v_1)+\lceil c\sqrt{n}/2q\rceil$ 
+  For each $z\in\{1,2\}$ and $\ell\in[2]$, let $v_\ell^{(z)}$ be the $T$-ancestor of $v_\ell$ of $T$-depth $\depth_T(v_0)+\lceil z\beta\sqrt{n}\rceil$.  Note that $v_\ell^{(z)}$ is well-defined since $\depth_T(v_\ell)\ge d \ge \depth_T(v_0)+2\beta\sqrt{n}$.
+  By \cref{awesome_path}, there exists a path $R^{(z)}_\ell$ from $v^{(z)}_\ell$ to $v^{(z)}_{\ell+1}$ in  $G_{C_\ell}$\todo{Define this notation} whose vertices have depths in the interval
+   \begin{equation}
+      \depth_T(v^{(z)}_\ell),\depth_T(v^{(z)}_\ell)+\beta\sqrt{n}-1]
+      \subseteq[\depth_T(v_0)+\lceil z\beta\sqrt{n}\rceil,\depth_T(v_0)+ (z+1)\beta\sqrt{n}] \label{face_span}
+   \end{equation}
+   and that contains at most $\alpha$ vertices from each layer in $\mathcal{L}$.
 
-
-
-
-    By \cref{awesome_path}, there exists a path $R_1$ from $v_1''$ to $v_2''$ in  $G_{C_1}$ whose vertices have depths in the interval $[\depth_T(v_1''),\depth_T(v_2'')+\beta\sqrt{n}]$ and that contains at most $\alpha$ vertices from each layer in $\mathcal{L}$.  Define a similar path from $R_2$ from $v_2''$ to $v_3''$, and a path $R_3$ from $v_3''$ to $v_1''$.  Finally, we set
+  Observe that $S^{(z)} := R^{(z)}_{0}\cup R^{(z)}_{1}$ is a path in $G$ with endpoints $v^{(z)}_{0}$ and $v^{(z)}_{1}$ that contains $v^{(z)}_\ell$ in its interior.  Let $X^{(z)}$ be the vertex set of the component of $S^{(z)}-V(F)$ that contains $v^{(z)}_1$.
+  We set
   \[
-    B_i := \bigcup_{\ell=1}^3 \left( V(R_\ell)\cup V(P_T(v_\ell'',v_\ell')-v_{\ell}')\right)
+     B_i := V(Q'_1)\cup X^{(1)} \cup X^{(2)}
   \]
+  This satisfies (good-c) because $S^{(2)}$ does not contain any vertices of $P_1$. It satisfies (good-b) for $w=2\alpha+1$. It satisfies (good-a) by construction. It satisfies (good-d) since all vertices in $B_i$ have depth at least $\depth_T(v_1')+1$ and (by \cref{face_span}) at most $\depth_T(v_1')+3\beta\sqrt{n}$.   It satisfies (struct-a) by construction.  It satisfies (struct-b) by construction.  It satisfies (struct-c) by \cref{face_span}.
 \end{proof}
 
 
