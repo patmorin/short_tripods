@@ -107,13 +107,17 @@
 \maketitle
 
 \begin{abstract}
-  We show that each $n$-vertex planar graph $G$ is isomorphic to a subgraph of the strong product of a graph $H$ of treewidth $3$, a cycle $C$ of length $O(\sqrt{n})$, and a clique $K_c$ of bounded size.  Symbolically, $G\subseteq H\boxtimes C\boxtimes K_c$. This is a variation of the Planar Graph Product Structure Theorem which asserts that $G\subseteq H\boxtimes P\boxtimes K_3$, where $P$ is a path with no non-trivial upper bound on its length.  To the best of our knowledge, this new theorem has no applications!
+  We show that each $n$-vertex planar graph $G$ is isomorphic to a subgraph of the strong product of a graph $H$ of treewidth $3$, a cycle $C$ of length at most $\sqrt{2n}$, and a clique $K_9$ on nine vertices.  Symbolically, $G\subseteq H\boxtimes C\boxtimes K_9$. This is a variation of the Planar Graph Product Structure Theorem (Dujmović \emph{et al}, JACM, \textbf{67}(4):22:1–22:38, 2020) which asserts that $G\subseteq H\boxtimes P\boxtimes K_3$, where $P$ is a path with no non-trivial upper bound on its length.  To the best of our knowledge, this new theorem has no applications!
 \end{abstract}
 
 \section{Introduction}
 
-\begin{thm}
-  There exists numbers $c,w>0$ such that for every $n$-vertex planar graph $G$, there exists a planar graph $H$ of treewidth $3$ and a cycle of length at most $c\sqrt{n}$ such that $G$ is isomorphic to a subgraph of $H\boxtimes C\boxtimes K_w$.
+\todo[inline]{Talk about the original product structure theorem and the $\sqrt{n}$-blowup results, and argue that this unifies the two.}
+
+
+
+\begin{thm}\label{main_thm}
+  There exists numbers $c,w>0$ such that for every $n$-vertex planar graph $G$, there exists a planar graph $H$ of treewidth $3$ and a cycle of length at most $\sqrt{2n}$ such that $G$ is isomorphic to a subgraph of $H\boxtimes C\boxtimes K_9$.
 \end{thm}
 
 
@@ -128,7 +132,7 @@ For two graphs $G$ and $A$, an \defin{embedding} of $G$ into $A$ is an injective
 
 We are particularly interested in embeddings into strong products.  Let $H$ be a graph and $P:=y_0,\ldots,y_{n-1}$ be a path and consider the graph $H\boxtimes P$.  For each $i\in[n]$, the vertex set $V(H)\times\{y_i\}$ is called the $i$th \defin{layer} of $H\boxtimes P$ and $\mathcal{L}_P:=\langle V(H)\times\{y_i\} \rangle_{i\in[n]}$ is a layering of $H\boxtimes P$ that we call the \defin{natural layering} of $H\boxtimes P$.
 
-Let $\varphi:V(G)\to H\boxtimes P$ be an embedding of $G$ into $H\boxtimes P$. A vertex $x$ of $H$ is \defin{relevant} to $\varphi$ if there is at least one $(v,i)\in V(G)\times [n]$ such that $\varphi(v)=(x,y_i)$.  We may assume that every vertex of $H$ is relevant to $\varphi$ since, if some vertex $x$ is irrelevant, then $\varphi:V(G)\to (H-\{x\})\boxtimes P$ is an embedding of $G$ into $(H-\{x\})\boxtimes P$. The \defin{span} of a (relevant) vertex $x$ of $H$ is
+Let $\varphi:V(G)\to H\boxtimes P$ be an embedding of $G$ into $H\boxtimes P$. A vertex $x$ of $H$ is \defin{relevant} to $\varphi$ if there is at least one $(v,i)\in V(G)\times [n]$ such that $\varphi(v)=(x,y_i)$.  Since we are interested in products whose factors are as simple as possible, we may assume that every vertex of $H$ is relevant to $\varphi$ since, if some vertex $x$ is irrelevant, then $\varphi:V(G)\to (H-\{x\})\boxtimes P$ is an embedding of $G$ into $(H-\{x\})\boxtimes P$. The \defin{span} of a (relevant) vertex $x$ of $H$ is
 \[
   \spn(\varphi,x):=\spn(\mathcal{L}_P, \varphi(V(G))\cap (\{x\}\times V(P)))
 \]
@@ -198,16 +202,19 @@ The QUACK $(\mathcal{B},\mathcal{L})$ is $(t,w,k)$-good if it is $(t,w)$-good an
 The proof of \cref{three_w_csqrtn_quack} makes use of the following lemma, whose proof is the subject of \cref{crux_section}.
 
 \begin{lem}\label{awesome_path}
-  There exists constants $\alpha,\beta>0$ such that, for any $n\ge 3$, the following is true.
-  Let $G$ be an $n$-vertex triangulation and let $C$ be a cycle in $G$ whose boundary consists of an edge $vw$ of $G$, a vertex $\lambda$ of $G$, a shortest path $P_v$ from $v$ to $\lambda$ and a shortest path $P_w$ from $w$ to $\lambda$.  Let $G_C$ be the subgraph of $G$ induced by the vertices in $C$ and the vertices of $G$ in the interior of $C$.  Let $s$ and $t$ be any two vertices of $C$ with $\dist(s,\lambda)=\dist(t,\lambda)=:d$.  Then $G_C$ contains a path $Q$ with endpoints $s$ and $t$ such that, for each $i\in\N$,
+  Let $G$ be an $n$-vertex triangulation and let $C$ be a cycle in $G$ whose boundary consists of an edge $e$ of $G$, a vertex $\lambda$ of $G$, and a shortest path from each of the endpoints of $e$ to $\lambda$.  Let $G_C$ be the subgraph of $G$ induced by the vertices in $C$ and the vertices of $G$ in the interior of $C$.  Let $s$ and $t$ be any two vertices of $C$ with $\dist(s,\lambda)=\dist(t,\lambda)=:d$.  Then $G_C$ contains a path $Q$ with endpoints $s$ and $t$ such that, for each $i\in\N$,
     \[  |\{x\in V(Q):\dist_G(x,\lambda)=i\}| \le
       \begin{cases}
         0 & \text{if $i < d$} \\
-        \alpha & \text{if $d\le i \le i+\beta\sqrt{n}$} \\
-        0 & \text{if $i > \beta\sqrt{n}$} \\
+        3 & \text{if $d\le i < i+\sqrt{2n}$} \\
+        0 & \text{if $i \ge \sqrt{2n}$} \\
       \end{cases}
     \]
 \end{lem}
+
+\todo[inline]{Our current proof requires that the two shortest paths in $G$ comes from a particular $\lambda$-rooted BFS tree of $G$ (that uses only clean edges in the ordered concentric representation).  This is enough to prove \cref{main_thm}, or we can use this weaker lemma to prove \cref{awesome_path}.}
+
+
 
 \begin{proof}[Proof of \cref{three_w_csqrtn_quack}]
   We will construct a  $(3,w,3\beta\sqrt{n})$-good quack $(\mathcal{B},\mathcal{L})$.
@@ -301,42 +308,77 @@ The proof of \cref{three_w_csqrtn_quack} makes use of the following lemma, whose
 \section{Proof of \cref{awesome_path}}
 \label{crux_section}
 
+In this section, we prove \cref{awesome_path}.  Our approach is to show that $G_C$ contains a grid-like subgraph $G_C'$ where each layer of the grid contains vertices from the corresponding layer in the $\lambda$-rooted BFS layering of $G_C$. The vertices $s$ and $t$ are the leftmost and rightmost vertices in the top layer of $G_C'$.  Once we find this structure, finding the path from $s$ to $t$ is easy.  We take the zig-zag path that begins at $v_0:=s$ (in the leftmost column) and walk along the diagonal of the grid until reaching the rightmost column, then we take the vertical path in the rightmost column to reach $t$. The first part of this path, $v_0,w_0,v_1,w_1,\ldots,v_i,w_i$ uses at most two vertices, $v_j$ and $w_j$ in layer $j$ for each $j\in\{0,\ldots,i\}$ and uses at most two vertices, $w_j$ and $v_{j+1}$, in column $j+1$, for each $j\in\{0,\ldots,i-1\}$.
 
-Let $G$ be a connected planar graph and let $r$ be a vertex of $G$.
-An \defin{ordered concentric representation} of $G$ with center $r$ is a non-crossing drawing of $G$ with $r$ on the outer face that has following properties:
+The second part of the path uses at most $1$ vertex in each of these layers, so the path uses at most $3$ vertices in each of the layers $0,\ldots,i$. To obtain a bound of $O(\sqrt{n})$ on the number, $i$, of layers, we will argue that $v_j$ is above at least $i-j$ vertices in its column.  Since $v_0,\ldots,v_i$ are all in different columns this implies that $G'_C$ contains at least $\sum_{j=0}^i(i-j+1)>i^2/2$ vertices.  Thus $i^2/2 < n$, so $i< \sqrt{2n}$.
+
+Let $G$ be a connected planar graph and let $r$ be a vertex of $G$. To help us find the grid-like structure in $G_C$ we make use of the following concept from graph drawing. An \defin{ordered concentric representation} of $G$ with center $r$ is a non-crossing drawing of $G$ with $r$ on the outer face that has following properties:
 \begin{compactenum}[(i)]
   \item For each $i\in\N$, the vertices in $L_i:=\{v\in V(G):\dist_G(v,r)=i\}$ are drawn on the line $y=-i$.
   \item For each edge $vw$ of $G$ with $v,w\in L_i$ for some $i$, the edge $vw$ is drawn as a curve whose interior is contained in the halfplane $y<-i$.
   \item For each edge $vw$ of $G$ with $v\in L_i$, $w\in L_{i+1}$ for some $i$, the edge $vw$ is drawn as the union of a curve $C_{vw}$ whose interior is contained in the strip $-i< y<i(i+1)$ and a curve $C_{wv}$ whose (possibly empty) interior is contained in the halfplane $y<-i(i+1)$.
 \end{compactenum}
 
-\citet{pupyrev:mixed} proves that every connected planar graph has a such a drawing:
+\citet{pupyrev:mixed} proves that every connected planar graph has a such a representation:
 
 \begin{lem}\label{pupyrev}
   For every connected planar graph $G$ and every vertex $r$ of $G$, there exists an ordered concentric representation of $G$ with center $r$.
 \end{lem}
 
-We say that an edge $vw$ in a concentric radial drawing of $G$ is a \defin{clean} edge if, for some $i$, $v\in L_i$, $w\in L_{i+1}$ and the interior of $vw$ is entirely contained in the strip $-i < y -(i-1)$.  The vertices $v$ and $w$ are called the \defin{upper} and \defin{lower} endpoints of $vw$.
+From this point on, we fix a vertex $r$ of our triangulation $G$ and an ordered concentric representation of $G$ centered at $r$.  We do not distinguish between a vertex and the point that represents it or between an edge and the curve that represents it.  We use the words ``left'' and ``right'' to compare two vertices on the same layer in the natural way.  We use ``above'' and ``below'' to compare layers or to compare a vertex to a layer.
+
+We say that an edge $vw$ of $G$ is a \defin{clean} edge if, for some $i$, $v\in L_i$, $w\in L_{i+1}$ and the interior of $vw$ is entirely contained in the strip $-i < y -(i-1)$.  The vertices $v$ and $w$ are called the \defin{upper} and \defin{lower} endpoints of $vw$.  The following strengthening of \cref{pupyrev} will allow us to build a spanning tree consisting entirely of clean edges.  Ultimately, vertical paths in this spanning tree will be used to construct columns in the grid-like graph $G_C'$.
 
 \begin{lem}\label{clean_edge}
   For every triangulation $G$ and every vertex $r$ of $G$, there exists an ordered concentric representation of $G$ with center $r$ such that, for each vertex $w\neq r$, the vertex $w$ is the lower endpoint of at least one clean edge.
 \end{lem}
 
 \begin{proof}
-  First, suppose that $w\in L_{i+1}$ is not on the outer face of $G$.  Then one of the faces $F:=uvw$ of $G$ incident to $w$ contains a non-empty line segment $wx$, where $x$ is a point above the line $y=-(i-1)$. At least one of $u$ or $v$ must be in $L_{i}$.  Without loss of generality, assume $v\in L_i$. Let $F'$ be the intersection of the interior of $F$ with the halfplane $y<-(i+1)$. Then $F'$ is connected and contains $w$ and $v$ on its boundary.  If the edge $vw$ is not clean, then it can be redrawn in the interior of $F'$ so that it is clean.
+  First, suppose that $w\in L_{i+1}$ is not on the outer face of $G$.  Then one of the faces $F:=uvw$ of $G$ incident to $w$ contains a non-empty line segment $wx$, where $x$ is a point above layer $i+1$. At least one of $u$ or $v$ must be in $L_{i}$ since, otherwise, the interior of $uvw$ is completely below layer $i+1$. Without loss of generality, assume $v\in L_i$. Let $F'$ be the intersection of the interior of $F$ with the halfplane $y<-(i+1)$. Then $F'$ is connected and contains $w$ and $v$ on its boundary.  If the edge $vw$ is not clean, then it can be redrawn in the interior of $F'$ so that it is clean.
 
-  Next, consider the case when $w$ is a vertex of the outer face.\todo{Not really needed.}
+  When $w$ is a vertex of the outer face, the argument is almost the same, except that the face incident to $w$ that contains the line segment $wx$ may be the outer face.  In this case, we chose $v\in L_i$ such that $vw$ is an edge of the outer face. If it is not already clean, then the edge $vw$ can be redrawn so that it is clean.
 \end{proof}
 
-Let $G$ be a planar graph equipped with an ordered concentric representation with center some $r\in v(G)$. Let $T$ be the spanning subgraph of $G$ obtained by choosing, for each vertex $w\in V(G)\setminus\{r\}$, a clean edge whose lower endpoint is $w$.  Then $T$ is a spanning tree of $G$ that consists entirely of clean edges.  We treat $T$ as a rooted tree whose root is $r$.
+Let $T$ be the spanning subgraph of $G$ obtained by choosing, for each vertex $w\in V(G)\setminus\{r\}$, a clean edge whose lower endpoint is $w$.  Then $T$ is a spanning tree of $G$ that consists entirely of clean edges.  We treat $T$ as a rooted tree whose root is $r$.  Then, for each $i\in\N$ and each $v\in L_i$, $\depth_T(v)=i$.
 
-Consider the following relation $\prec$ over pairs of vertices in $G$. For each $i$ and each pair of distinct vertices $v,w\in L_i$, $v\prec w$ if and only if the x-coordinate of $v$ is less than the x-coordinate of $w$.  For a pair of vertex $v\in L_i$ and $w\in L_j$, for $j>i$, let $w'$ be the $T$-ancestor of $w$ whose $T$-depth is $i$.  If $v\prec w'$ then $v\prec w$. If $v\succ w'$ then $v\succ w$. (If $v=w'$ then $v$ and $w$ are incomparable.)
+For a node $v\in L_i$, the $T$-children $v_0,\ldots,v_{k-1}\in L_{i+1}$ have a natural left-to-right order given by their order in $L_{i+1}$.  This gives a natural left-to-right order for the subtrees $T_0,\ldots,T_{k-1}$ of $T$ rooted at these nodes.  Define the relationship $\prec$ over pairs of vertices $v,w$ of $G$ as follows:  If neither of $v$ or $w$ is a $T$-ancestor of the other, then the $x$ be the lowest common $T$-ancestor of $v$ and $w$, let $v'$ be the second node in $\pth_T(x,v)$ and let $w'$ be the second node in $\pth_T(x,w)$.  Then $v\prec w$ if $v'$ is to the left of $w'$, and $w\prec v$ if $w'$ is to the left of $v'$.
 
-\begin{clm}\label{partial_order}
-  The pair $(V(G),\prec)$ is a partial order.
+Consider the following relation $\prec_0$ over pairs of vertices in $G$. For each $i$ and each pair of distinct vertices $v,w\in L_i$, $v\prec_0 w$ if and only if  $v$ is to the left of $w$.  For a pair of vertices $v\in L_i$ and $w\in L_j$, with $j>i$, let $w'$ be the $T$-ancestor of $w$ whose $T$-depth is $i$.  If $v\prec_0 w'$ then $v\prec_0 w$. If $w'\prec_0 v$ then $w\prec_0 v$. (If $v=w'$ then $v$ and $w$ are incomparable.)
+
+\begin{clm}
+  There is no sequence of vertices $v_0,\ldots,v_{k-1}$ in $G$ such that $v_0\prec_0 v_1\prec_0\cdots\prec_0 v_{k-1}\prec_0 v_0$.
 \end{clm}
 
 \begin{proof}
+  Let $i$ be the minimum integer such that $\{v_0,\ldots,v_{k-1}\}\subseteq \bigcup_{j>i}L_i$.  For each $j\in[k]$, let $v'_j$ be the $T$-ancestor of $v_j$ in $L_i$.  If $v_0',\ldots,v_{k-1}'$ are all distinct, then $v_0'$ is the leftmost of these vertices in $L_i$ and $v_{k-1}'$ is the rightmost of these vertices in layer $i$.
+\end{proof}
+
+
+Let $\prec$ be the transitive closure of $\prec_0$.
+
+\begin{obs}
+  For any two vertices $v,w\in V(G)$, exactly one of the following is true:
+  \begin{compactenum}
+    \item $v$ is a $T$-ancestor of $w$ or $w$ is a $T$-ancestor of $v$; or
+    \item $v\prec w$ or $w\prec v$.
+  \end{compactenum}
+\end{obs}
+
+\begin{clm}\label{partial_order}
+  The pair $(V(G),\prec)$ is a strict partial order.
+\end{clm}
+
+\begin{proof}
+  We need to show that $\prec$ is irreflexive, asymmetric, and transitive.  By definition $v\not\prec v$ for any $v\in V(G)$, so $\prec$ is irreflexive.
+
+  If $v\prec w$ for $v,w\in L_i$ then $v\not\prec w$ because the ``left of'' relationship is a total order. Next, consider the case that $v\prec w$ for $v\in L_i$ and $w\in L_j$, $i\neq j$.  In this case, $v\prec w$ if and only if $v'\prec w'$, where $v'$ and $w'$ are the $T$-ancestors of $v$ and $w$ in $L_{\min\{i,j\}}$.  Again, this implies that $w'\not\prec v'$, which implies that $w\not\prec v$.
+
+  If $u\prec v$ and $v\prec w$
+
+
+  If $j>i$ then $v\not\prec w$ by definition. If $j< i$  If $v\prec w$ for $
+
+
   Follows from the fact that $T$ is a tree and each edge of $T$ is clean.
 \end{proof}
 
