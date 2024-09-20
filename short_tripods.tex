@@ -107,7 +107,7 @@
 \maketitle
 
 \begin{abstract}
-  We show that each $n$-vertex planar graph $G$ is isomorphic to a subgraph of the strong product of a graph $H$ of treewidth $3$, a cycle $C$ of length at most $\sqrt{2n}$, and a clique $K_9$ on nine vertices.  Symbolically, $G\subseteq H\boxtimes C\boxtimes K_9$. This is a variation of the Planar Graph Product Structure Theorem (Dujmović \emph{et al}, JACM, \textbf{67}(4):22:1–22:38, 2020) which asserts that $G\subseteq H\boxtimes P\boxtimes K_3$, where $P$ is a path with no non-trivial upper bound on its length.  To the best of our knowledge, this new theorem has no applications!
+  We show that each $n$-vertex planar graph $G$ is isomorphic to a subgraph of the strong product of a graph $H$ of treewidth $3$, a cycle $C$ of length at most $\sqrt{18n}$, and a clique $K_9$ on nine vertices.  Symbolically, $G\subseteq H\boxtimes C\boxtimes K_9$. This is a variation of the Planar Graph Product Structure Theorem (Dujmović \emph{et al}, JACM, \textbf{67}(4):22:1–22:38, 2020) which asserts that $G\subseteq H\boxtimes P\boxtimes K_3$, where $P$ is a path with no non-trivial upper bound on its length.  To the best of our knowledge, this new theorem has no applications!
 \end{abstract}
 
 \section{Introduction}
@@ -117,7 +117,7 @@
 
 
 \begin{thm}\label{main_thm}
-  There exists numbers $c,w>0$ such that for every $n$-vertex planar graph $G$, there exists a planar graph $H$ of treewidth $3$ and a cycle of length at most $\sqrt{2n}$ such that $G$ is isomorphic to a subgraph of $H\boxtimes C\boxtimes K_9$.
+  There exists numbers $c,w>0$ such that for every $n$-vertex planar graph $G$, there exists a planar graph $H$ of treewidth $3$ and a cycle of length at most $\sqrt{18n}$ such that $G$ is isomorphic to a subgraph of $H\boxtimes C\boxtimes K_9$.
 \end{thm}
 
 
@@ -149,7 +149,7 @@ In words, if $x$ has span $k$, then all appearances of $x$ in $\varphi(G)$ occur
 For any connected graph $G$ and any vertex $v_0$ of $G$, the sequence $\langle \{v\in V(G):\dist_G(v_0,v)=i\}\rangle_{i\in\N}$ is called the \defin{$v_0$-rooted BFS layering} of $G$.
 
 
-Let $G$ be a graph.  A sequence $\mathcal{B}:=B_0,\ldots,B_{p-1}$ of non-empty pairwise-disjoint subsets of $V(G)$ whose union is $V(G)$ is called a \defin{blocked vertex insertion order} for $G$. Let $G$ be a plane graph, let $\mathcal{B}:=B_0,\ldots,B_{p-1}$ be a blocked vertex insertion order for $G$ and let $\mathcal{L}$ be a layering of $G$.   The pair $(\mathcal{B},\mathcal{L})$ is a called a \defin{quack} for $G$.  We say that  the QUACK $(\mathcal{B},\mathcal{L})$ is \defin{$(t,w)$-good} if it satisfies the following conditions:
+Let $G$ be a graph.  A sequence $\mathcal{B}:=B_0,\ldots,B_{p-1}$ of non-empty pairwise-disjoint subsets of $V(G)$ whose union is $V(G)$ is called a \defin{blocked vertex insertion order} for $G$. Let $G$ be a plane graph, let $\mathcal{B}:=B_0,\ldots,B_{p-1}$ be a blocked vertex insertion order for $G$ and let $\mathcal{L}$ be a layering of $G$.   The pair $(\mathcal{B},\mathcal{L})$ is a called a \defin{quack} for $G$.  We say that  the quack $(\mathcal{B},\mathcal{L})$ is \defin{$(t,w)$-good} if it satisfies the following conditions:
 \begin{compactenum}[({good}-a)]
   \item For each $i\in[p]$, the vertices in $B_i$ are all contained in a single face $F_i$ of $G_{i-1}:=G[\bigcup_{j=0}^{i-1} T_i]$;
   \item For each $i\in[p]$ and each $j\in[h]$, $|B_i\cap L_j|\le w$;
@@ -175,7 +175,7 @@ We say that $(\mathcal{B},\mathcal{L})$ is $(t,w)$-great if there exists a plane
   Copy from linear-time algorithm paper.
 \end{proof}
 
-The QUACK $(\mathcal{B},\mathcal{L})$ is $(t,w,k)$-good if it is $(t,w)$-good and,
+The quack $(\mathcal{B},\mathcal{L})$ is $(t,w,k)$-good if it is $(t,w)$-good and,
 \begin{compactenum}[({good-}a)]\setcounter{enumi}{18}
   \item for each $i\in[p]$, $\spn(\mathcal{L},B_i)\le k$.
 \end{compactenum}
@@ -195,7 +195,7 @@ The QUACK $(\mathcal{B},\mathcal{L})$ is $(t,w,k)$-good if it is $(t,w)$-good an
 % A sequence $L_0,\ldots,L_h$ of vertex subsets of $G$ is a \defin{BFS layering} of $G$ if it is a $v_0$-rooted BFS layering of $G$ for some vertex $v_0$ of $G$.
 
 \begin{thm}\label{three_w_csqrtn_quack}
-  There exists real numbers $c,w>0$ such that, for every integer $n\ge 3$, every $n$-vertex triangulation $G$ has a $(3,w,c\sqrt{n})$-great quack.
+  There exists real numbers $c,w>0$ such that, for every integer $n\ge 3$, every $n$-vertex triangulation $G$ has a $(3,9,\sqrt{18n})$-great quack.
 \end{thm}
 
 
@@ -222,7 +222,7 @@ The proof of \cref{three_w_csqrtn_quack} makes use of the following lemma, whose
 
   We will construct $\mathcal{B}:=B_0,\ldots,B_{p-1}$ iteratively, beginning with $B_0:=L_0$.  When constructing $B_i$ we will ensure that, in addition to the conditions imposed $(3,w,c\sqrt{n})$-goodness, $B_i$ satisfies the following structural invariants:
   \begin{compactenum}[({struct}-a)]
-    \item $\mathdefin{G_i}:=\bigcup_{j=0}^i B_i$ is $2$-connected;
+    \item $\mathdefin{G_i}:=G[\bigcup_{j=0}^i B_i]$ is $2$-connected;
     % \item $\spn(\mathcal{L},B_i)\le C\sqrt{n}$;
     \item For each $i\in[p]$, each face $F_i$ of $G_i$, and each $j\in I(F)$,  the vertices in $V(F)\cap B_j$ appear consecutively on the boundary of $F_i$;
     \item For each $i\in[p]$, each face $F_i$ of $G_i$, and each $j\in I(F)$, $\spn(\mathcal{L},V(F)\cap B_j)\le 2\beta\sqrt{n}$.
@@ -281,25 +281,25 @@ The proof of \cref{three_w_csqrtn_quack} makes use of the following lemma, whose
   \]
   All that remains is to verify that this choice of $B_i$ satisfies (good-a)--(good-c), (good-x), (good-s) and (struct-a)--(struct-c).
   \begin{description}
-    \item[good-a] $B_i$ satisfies (good-a) since, by construction, all the vertices of $B_i$ are contained in the interior of $F_i$.
+    \item[(good-a)] $B_i$ satisfies (good-a) since, by construction, all the vertices of $B_i$ are contained in the interior of $F_i$.
 
-    \item[good-b] $B_i$ satisfies (good-b) for $w=2\alpha+3$ since, for any layer $L_j$, there is a $z\in\{1,2\}$ such that $|B_i\cap L_j|\le |L_j\cap (R_{0,z}\cup R_{1,z}\cup V(Q_0)\cup V(Q_1)\cup V(Q_2))|\le \alpha+\alpha+1+1+1$.  (The value $z=1$ if $j < \depth_T(v_1')+2\beta\sqrt{n}$ and $z=2$ otherwise.)
+    \item[(good-b)] $B_i$ satisfies (good-b) for $w=2\alpha+3$ since, for any layer $L_j$, there is a $z\in\{1,2\}$ such that $|B_i\cap L_j|\le |L_j\cap (R_{0,z}\cup R_{1,z}\cup V(Q_0)\cup V(Q_1)\cup V(Q_2))|\le \alpha+\alpha+1+1+1$.  (The value $z=1$ if $j < \depth_T(v_1')+2\beta\sqrt{n}$ and $z=2$ otherwise.)
 
-    \item[good-x] $B_i$ satisfies (good-x) for the following reasons: For any vertex $v$ in $S_1\cup S_2\cup Q_1'$, there is a path from $v_{1,2}$ to $v$.  For each $\ell\in\{1,2\}$, if $Q_\ell'$ is non-empty then $G[B_i]$ contains a path, namely $R_{\ell-1,2}$, from $v_{1,2}$ to the vertices in $Q'_\ell$.
+    \item[(good-x)] $B_i$ satisfies (good-x) for the following reasons: For any vertex $v$ in $S_1\cup S_2\cup Q_1'$, there is a path from $v_{1,2}$ to $v$.  For each $\ell\in\{1,2\}$, if $Q_\ell'$ is non-empty then $G[B_i]$ contains a path, namely $R_{\ell-1,2}$, from $v_{1,2}$ to the vertices in $Q'_\ell$.
 
-    \item[good-c] This choice of $B_i$ satisfies (good-c) because $S_{2}$ cannot contain any vertices of $P_1$. Indeed, \cref{awesome_path} ensures that the vertices in $S_2$ have $T$-depth at least $\depth_T(v_1')+ 2\beta\sqrt{n}$ while (struct-c) ensures that the vertices in $P_1$ have $T$-depth at most $\depth_T(v_1')+2\beta\sqrt{n}-1$.
+    \item[(good-c)] This choice of $B_i$ satisfies (good-c) because $S_{2}$ cannot contain any vertices of $P_1$. Indeed, \cref{awesome_path} ensures that the vertices in $S_2$ have $T$-depth at least $\depth_T(v_1')+ 2\beta\sqrt{n}$ while (struct-c) ensures that the vertices in $P_1$ have $T$-depth at most $\depth_T(v_1')+2\beta\sqrt{n}-1$.
 
     Therefore $G_i$ contains a path $Q_0''$ whose internal vertices are contained $Q_0'\cup R_{0,2}$ from $v_{1,2}$ to some vertex in $P_0$.  $G'$ also has a path $Q_1''$ whose internal vertices are contained in $Q_1'$ from $v_{1,2}$ to some vertex in $P_1$.  $G'$ also has a path $Q_2''$ whose internal vertices are contained in $Q_2'\cup R_{1,2}$.  Consider the subgraph $G_i':=F\cup Q_0''\cup Q_1''\cup Q_2''$ of $G_i$
 
     Each inner face of $G_i'$ is incident to at most two of the paths $P_0$, $P_1$ or $P_2$ and is therefore incident to at most two of the vertex sets $B_{j_0}$, $B_{j_1}$ or $B_{j_2}$. Any face $F'$ of $G_i$ that is not a face of $G_{i-1}$ is contained in one of the inner faces of $G_i'$ and is therefore incident to at most three of $B_{j_0}$, $B_{j_1}$, $B_{j_2}$, or $B_i$.
 
-    \item[good-s] $B_i$ satisfies (good-s) since all vertices in $B_i$ have depth at least $\depth_T(v_1')+1$ and (by \cref{face_span}) at most $\depth_T(v_1')+3\beta\sqrt{n}$.
+    \item[(good-s)] $B_i$ satisfies (good-s) since all vertices in $B_i$ have depth at least $\depth_T(v_1')+1$ and (by \cref{face_span}) at most $\depth_T(v_1')+3\beta\sqrt{n}$.
 
-    \item[struct-a] $B_i$ satisfies (struct-a) by construction.  In particular, $G_i$ can be obtained from $G_{i-1}$ by repeated adding a path between two vertices of a face whose inner vertices (this in $B_i=V(G_i)\setminus V(G_{i-1})$) are contained in the interior face.  The addition of each such path preserves biconnectivity.
+    \item[(struct-a)] $B_i$ satisfies (struct-a) by construction.  In particular, $G_i$ can be obtained from $G_{i-1}$ by repeated adding a path between two vertices of a face whose inner vertices (this in $B_i=V(G_i)\setminus V(G_{i-1})$) are contained in the interior face.  The addition of each such path preserves biconnectivity.
 
-    \item[struct-b] $B_i$ satisfies (struct-b) since $B_i$ is contained in the interior of a single face $F_i$ of $G_{i-1}$ and $G[B_i]$ is connected.  If $F'[B_i]$ were disconnected for some face $F'$ of $G_i$, then $G[B_i]$ would be disconnected.
+    \item[(struct-b)] $B_i$ satisfies (struct-b) since $B_i$ is contained in the interior of a single face $F_i$ of $G_{i-1}$ and $G[B_i]$ is connected.  If $F'[B_i]$ were disconnected for some face $F'$ of $G_i$, then $G[B_i]$ would be disconnected.
 
-    \item[struct-c] $B_i$ satisfies (struct-c) by \cref{face_span}.  Specifically, for any face $F'$ of $G_i$, the vertices in $B_i\cap V(F')$ come from vertices of $Q_1\cup Q_2\cup Q_3$ whose $T$-depths are in $[\depth_T(v_1')+(z-1)\beta\sqrt{n}+1,\depth_T(v_1')+z\beta\sqrt{n}]$, from vertices of $R_{0,z}$ and $R_{1,z}$ whose vertices $T$-depths are in $[\depth_T(v_1')+z\beta\sqrt{n},\depth_T(v_1')+(z+1)\beta\sqrt{n}]$, and (if $z=2$) vertices of $R_{0,z-1}$ and $R_{1,z-1}$ whose vertices $T$-depths are in $[\depth_T(v_1')+(z-1)\beta\sqrt{n},\depth_T(v_1')+z\beta\sqrt{n}]$. \qedhere
+    \item[(struct-c)] $B_i$ satisfies (struct-c) by \cref{face_span}.  Specifically, for any face $F'$ of $G_i$, the vertices in $B_i\cap V(F')$ come from vertices of $Q_1\cup Q_2\cup Q_3$ whose $T$-depths are in $[\depth_T(v_1')+(z-1)\beta\sqrt{n}+1,\depth_T(v_1')+z\beta\sqrt{n}]$, from vertices of $R_{0,z}$ and $R_{1,z}$ whose vertices $T$-depths are in $[\depth_T(v_1')+z\beta\sqrt{n},\depth_T(v_1')+(z+1)\beta\sqrt{n}]$, and (if $z=2$) vertices of $R_{0,z-1}$ and $R_{1,z-1}$ whose vertices $T$-depths are in $[\depth_T(v_1')+(z-1)\beta\sqrt{n},\depth_T(v_1')+z\beta\sqrt{n}]$. \qedhere
   \end{description}
 \end{proof}
 
@@ -339,22 +339,22 @@ We say that an edge $vw$ of $G$ is a \defin{clean} edge if, for some $i$, $v\in 
   When $w$ is a vertex of the outer face, the argument is almost the same, except that the face incident to $w$ that contains the line segment $wx$ may be the outer face.  In this case, we chose $v\in L_i$ such that $vw$ is an edge of the outer face. If it is not already clean, then the edge $vw$ can be redrawn so that it is clean.
 \end{proof}
 
-Let $T$ be the spanning subgraph of $G$ obtained by choosing, for each vertex $w\in V(G)\setminus\{r\}$, a clean edge whose lower endpoint is $w$.  Then $T$ is a spanning tree of $G$ that consists entirely of clean edges.  We treat $T$ as a rooted tree whose root is $r$.  Then, for each $i\in\N$ and each $v\in L_i$, $\depth_T(v)=i$.
+Let $T$ be the subgraph of $G$ obtained by choosing, for each vertex $w\in V(G)\setminus\{r\}$, a clean edge whose lower endpoint is $w$.  Clearly $T$ is acyclic, and it has $n-1$ edges, so $T$ must contain the vertex $r$, so $T$ is a spanning tree of $G$ that consists entirely of clean edges.  We treat $T$ as a rooted tree whose root is $r$.  Then, for each $i\in\N$ and each $v\in L_i$, $\depth_T(v)=i$.
 
-For a node $v\in L_i$, the $T$-children $v_0,\ldots,v_{k-1}\in L_{i+1}$ have a natural left-to-right order given by their order in $L_{i+1}$.  This gives a natural left-to-right order for the subtrees $T_0,\ldots,T_{k-1}$ of $T$ rooted at these nodes.  Define the relationship $\prec$ over pairs of vertices $v,w$ of $G$ as follows:  If neither of $v$ or $w$ is a $T$-ancestor of the other, then the $x$ be the lowest common $T$-ancestor of $v$ and $w$, let $v'$ be the second node in $\pth_T(x,v)$ and let $w'$ be the second node in $\pth_T(x,w)$.  Then $v\prec w$ if $v'$ is to the left of $w'$, and $w\prec v$ if $w'$ is to the left of $v'$.
+% For a node $v\in L_i$, the $T$-children $v_0,\ldots,v_{k-1}\in L_{i+1}$ have a natural left-to-right order given by their order in $L_{i+1}$.  This gives a natural left-to-right order for the subtrees $T_0,\ldots,T_{k-1}$ of $T$ rooted at these nodes.  Define the relationship $\prec$ over pairs of vertices $v,w$ of $G$ as follows:  If neither of $v$ or $w$ is a $T$-ancestor of the other, then the $x$ be the lowest common $T$-ancestor of $v$ and $w$, let $v'$ be the second node in $\pth_T(x,v)$ and let $w'$ be the second node in $\pth_T(x,w)$.  Then $v\prec w$ if $v'$ is to the left of $w'$, and $w\prec v$ if $w'$ is to the left of $v'$.
 
-Consider the following relation $\prec_0$ over pairs of vertices in $G$. For each $i$ and each pair of distinct vertices $v,w\in L_i$, $v\prec_0 w$ if and only if  $v$ is to the left of $w$.  For a pair of vertices $v\in L_i$ and $w\in L_j$, with $j>i$, let $w'$ be the $T$-ancestor of $w$ whose $T$-depth is $i$.  If $v\prec_0 w'$ then $v\prec_0 w$. If $w'\prec_0 v$ then $w\prec_0 v$. (If $v=w'$ then $v$ and $w$ are incomparable.)
+Consider the following relation $\prec$ over pairs of vertices in $G$. For each $i$ and each pair of distinct vertices $v,w\in L_i$, $v\prec w$ if and only if  $v$ is to the left of $w$.  For a pair of vertices $v\in L_i$ and $w\in L_j$, with $j>i$, let $w'$ be the $T$-ancestor of $w$ whose $T$-depth is $i$.  If $v\prec w'$ then $v\prec w$. If $w'\prec v$ then $w\prec v$. (If $v=w'$ then $v$ and $w$ are incomparable.)
 
-\begin{clm}
-  There is no sequence of vertices $v_0,\ldots,v_{k-1}$ in $G$ such that $v_0\prec_0 v_1\prec_0\cdots\prec_0 v_{k-1}\prec_0 v_0$.
-\end{clm}
-
-\begin{proof}
-  Let $i$ be the minimum integer such that $\{v_0,\ldots,v_{k-1}\}\subseteq \bigcup_{j>i}L_i$.  For each $j\in[k]$, let $v'_j$ be the $T$-ancestor of $v_j$ in $L_i$.  If $v_0',\ldots,v_{k-1}'$ are all distinct, then $v_0'$ is the leftmost of these vertices in $L_i$ and $v_{k-1}'$ is the rightmost of these vertices in layer $i$.
-\end{proof}
-
-
-Let $\prec$ be the transitive closure of $\prec_0$.
+% \begin{clm}
+%   There is no sequence of vertices $v_0,\ldots,v_{k-1}$ in $G$ such that $v_0\prec_0 v_1\prec_0\cdots\prec_0 v_{k-1}\prec_0 v_0$.
+% \end{clm}
+%
+% \begin{proof}
+%   Let $i$ be the minimum integer such that $\{v_0,\ldots,v_{k-1}\}\subseteq \bigcup_{j>i}L_i$.  For each $j\in[k]$, let $v'_j$ be the $T$-ancestor of $v_j$ in $L_i$.  If $v_0',\ldots,v_{k-1}'$ are all distinct, then $v_0'$ is the leftmost of these vertices in $L_i$ and $v_{k-1}'$ is the rightmost of these vertices in layer $i$.
+% \end{proof}
+%
+%
+% Let $\prec$ be the transitive closure of $\prec_0$.
 
 \begin{obs}
   For any two vertices $v,w\in V(G)$, exactly one of the following is true:
@@ -364,70 +364,69 @@ Let $\prec$ be the transitive closure of $\prec_0$.
   \end{compactenum}
 \end{obs}
 
-\begin{clm}\label{partial_order}
-  The pair $(V(G),\prec)$ is a strict partial order.
-\end{clm}
-
-\begin{proof}
-  We need to show that $\prec$ is irreflexive, asymmetric, and transitive.  By definition $v\not\prec v$ for any $v\in V(G)$, so $\prec$ is irreflexive.
-
-  If $v\prec w$ for $v,w\in L_i$ then $v\not\prec w$ because the ``left of'' relationship is a total order. Next, consider the case that $v\prec w$ for $v\in L_i$ and $w\in L_j$, $i\neq j$.  In this case, $v\prec w$ if and only if $v'\prec w'$, where $v'$ and $w'$ are the $T$-ancestors of $v$ and $w$ in $L_{\min\{i,j\}}$.  Again, this implies that $w'\not\prec v'$, which implies that $w\not\prec v$.
-
-  If $u\prec v$ and $v\prec w$
-
-
-  If $j>i$ then $v\not\prec w$ by definition. If $j< i$  If $v\prec w$ for $
+% \begin{clm}\label{partial_order}
+%   The pair $(V(G),\prec)$ is a strict partial order.
+% \end{clm}
+%
+% \begin{proof}
+%   We need to show that $\prec$ is irreflexive, asymmetric, and transitive.  By definition $v\not\prec v$ for any $v\in V(G)$, so $\prec$ is irreflexive.
+%
+%   If $v\prec w$ for $v,w\in L_i$ then $v\not\prec w$ because the ``left of'' relationship is a total order. Next, consider the case that $v\prec w$ for $v\in L_i$ and $w\in L_j$, $i\neq j$.  In this case, $v\prec w$ if and only if $v'\prec w'$, where $v'$ and $w'$ are the $T$-ancestors of $v$ and $w$ in $L_{\min\{i,j\}}$.  Again, this implies that $w'\not\prec v'$, which implies that $w\not\prec v$.  Thus, $\prec$ is asymmetric.
+%
+%   If $u\prec v$ and $v\prec w$ then.....
+% \end{proof}
 
 
-  Follows from the fact that $T$ is a tree and each edge of $T$ is clean.
-\end{proof}
-
-
-\begin{clm}
-  For each edge $vw\in E(G)\setminus E(T)$, $v\prec w$ or $w\prec v$.
-\end{clm}
-
-\begin{proof}
-  If $v,w\in L_i$ for some $i$ then this is immediate. Otherwise $v\in L_i$ and $w\in L_{i+1}$ for some $i$. Let $w'$ be the parent of $w$ in $T$.  Then $w'\in L_i$ and, since $vw\not\in E(T)$, $w'\neq v$.  Therefore $w'$ is comparable to $v$, so $w$ is comparable to $v$.
-\end{proof}
+% \begin{clm}
+%   For each edge $vw\in E(G)\setminus E(T)$, $v\prec w$ or $w\prec v$.
+% \end{clm}
+%
+% \begin{proof}
+%   If $v,w\in L_i$ for some $i$ then this is immediate. Otherwise $v\in L_i$ and $w\in L_{i+1}$ for some $i$. Let $w'$ be the parent of $w$ in $T$.  Then $w'\in L_i$ and, since $vw\not\in E(T)$, $w'\neq v$.  Therefore $w'$ is comparable to $v$, so $w$ is comparable to $v$.
+% \end{proof}
 
 
 We say that a vertex $z\in L_j$ is \defin{$i$-redundant} if there exists an edge $vw\in E(G)\setminus E(T)$ such that $v\prec z\prec w$ and $v\in L_{i'}$ for some $i'\le i$.
 
 \begin{clm}\label{has_descendant}
-  If $i\ge j$, $|L_j\cap V(G_C)|\ge 2$ and a vertex $v\in L_j$ is not $i$-redundant then $v$ has a $T$-descendant\todo{Define $T$-descendant} in $L_i$.
+  If $i\ge j$, and a vertex $v\in L_j$ is not $i$-redundant then $v$ has a $T$-descendant\todo{Define $T$-descendant} in $L_i$.
 \end{clm}
 
 \begin{proof}
-  If $v$ is on the outer face of $G_C$, then the result is trivial since the two paths that define the outer face of $G_C$ are paths in $T$.  Therefore, we may assume that $v$ is not on the outer face of $G_C$.
+  If $v$ is on the outer face of $G_C$, then the result is trivial since the two paths that define the outer face of $G_C$ are paths in $T$.\todo{This is where we assume that the BFS tree is special.}  Therefore, we may assume that $v$ is not on the outer face of $G_C$.
 
   The proof is by induction on $i-j$.
-  If $i=j$, the result is trivial since $v$ is a $T$-descendant of itself. For $i>j$, it suffices to show that $v$ has at least one non-redundant $T$-child $v'$ after which we can apply the induction on $v'\in L_{j+1}$.  If $v$ has no child in $T$, then there is a face $vxy$ with $x\prec v\prec y$ and $x,y\in L_{j}\cup L_{j+1}$. Then $x$ and $y$ have $T$-ancestors $x'$ and $y'$ in $L_j$ (possibly $x=x'$ or $y=y'$). But this implies that $v$ is $(j+1)$-redundant, a contradiction. We now assume that $v$ has at least one child in $T$.
+  If $i=j$, the result is trivial since $v$ is a $T$-descendant of itself. For $i>j$, it suffices to show that $v$ has at least one non-redundant $T$-child $v'$ after which we can apply induction on $v'\in L_{j+1}$.
 
-  Let $v_1\prec\cdots\prec v_k$ be the $T$-children of $v$.  Note that every vertex of $G_C$ on the line segment $\overline{v_1v_k}$ is a child of $v$.  Planarity implies that if $v_1,\ldots,v_k$ are all $i$-redundant then there is a single edge $xy$ with endpoints in $L_{j+1}\cup\cdots\cup L_i$ such that $x$ has a $T$-ancestor $x'\in L_{j+1}$ with $x'\prec v_1$ and $y$ has a $T$-ancestor $y'\in L_{j+1}$ with $v_k\prec y'$. Let $x''$ be the parent of $x'$ and let $y''$ be the parent of $y'$.  Then $x''\prec v$ and $v\prec y''$, which implies that $v$ is $i$-redundant, a contradiction.
+  If $v$ has no child in $T$, then there is a face $vxy$ with $x\prec v\prec y$ and $x,y\in L_{j}\cup L_{j+1}$. Then $x$ and $y$ have $T$-ancestors $x'$ and $y'$ in $L_j$ (possibly $x=x'$ or $y=y'$). But this implies that $v$ is $(j+1)$-redundant, a contradiction. We now assume that $v$ has at least one child in $T$.
+
+  Let $v_1\prec\cdots\prec v_k$ be the $T$-children of $v$.  Note that every vertex of $G_C$ on the line segment $\overline{v_1v_k}$ is a child of $v$.  Planarity implies that if $v_1,\ldots,v_k$ are all $i$-redundant then there is a single edge $xy$ with endpoints in $L_{j+1}\cup\cdots\cup L_i$ such that $x$ has a $T$-ancestor $x'\in L_{j+1}$ with $x'\prec v_1$ and $y$ has a $T$-ancestor $y'\in L_{j+1}$ with $v_k\prec y'$. Let $x''$ be the parent of $x'$ and let $y''$ be the parent of $y'$.  Neither $x'$ nor $y'$ is a child of $v$, so $x''\neq v$ and $y''\neq v$. The edges $x'x''$ does not cross the edge $vv_1$, so $x''\prec v$.  Similarly, $v\prec y''$.  Therefore $x''\prec v\prec y''$, which implies that $v$ is $i$-redundant, a contradiction.
 \end{proof}
 
 
 Let $C$, $G_C$, $s$, $t$, and $d$ be defined as in \cref{awesome_path}, with the restriction that the tree $T$ in \cref{awesome_path} is the tree $T$ defined above.  In all of the following, we use the convention that $s\prec t$.  A path $P$ in $G_C$ is \defin{$(i,b)$-suitable} if $V(P)\subseteq L_{d}\cup\cdots L_{d+i}$ and $|V(P)\cap L_j|\le b$ for all $j\in\N$.  A vertex $v\in V(G_C)$ is \defin{$(i,b)$-reachable} if $G_C$ contains an $(i,b)$-suitable path from $s$ to $v$.
 
-\begin{clm}
-  If $v,w\in L_j\cap V(G_C)$, such that $w$ is $(i,b)$-reachable, $v\prec w$, and $v$ is not $i$-redundant then $v$ is $(i,b)$-reachable.
-\end{clm}
+\todo[inline]{There's an annoying mismatch here, where many occurrences of $i$ and $j$ should be replaced with $i+d$ and $j+d$ since we want everything to be relative to $d=\depth_T(s)=\depth_T(t)$.}
 
-\begin{proof}
-  Since $w$ is $(i,b)$-reachable, $j\le i$.
-  If $s$ is a $T$-ancestor of $v$ then this is trivial, since $\pth_T(s,v)$ is an $(i,b)$-suitable path from $s$ to $v$.  Otherwise, $s\prec v$.
-  Let $P$ be an $(i,b)$-suitable path from $s$ to $w$.  We claim that $P$ contains a vertex $v'$ that is incomparable to $v$.  Since $v\prec w$, the only other possibility is that $P$ contains an edge $v'w'$ with $v'\prec v$ and $v\prec w'$. If $v'w'$ is above $v$ then $v'w'$ crosses an edge of $\pth(r,v)$, which is not possible since $G$ is a non-crossing drawing.  If $v'w'$ is below $v$ then $v$ is redundant, which is not possible by the assumptions of the lemma.
 
-  Thus $P$ contains a vertex $v'$ that is incomparable to $v$. The path $P$ therefore consists of two subpaths $P_{sv'}$ and $P_{v'w}$ with a common endpoint $v'$.  Note that the path $P_{v'w}$ contains at least one vertex from each layer between the layer that contains $v'$ and the layer that contains $w$.  The path $\pth(v',v)$ intersects each of these layers in exactly one vertex.  Therefore, the concatenation of $P_{sv'}$ and $\pth(v',v)$ is an $(i,b)$-suitable path from $s$ to $v$.
-\end{proof}
+% \begin{clm}
+%   If $v,w\in L_j\cap V(G_C)$, such that $w$ is $(i,b)$-reachable, $v\prec w$, and $v$ is not $i$-redundant then $v$ is $(i,b)$-reachable.
+% \end{clm}
+%
+% \begin{proof}
+%   Since $w$ is $(i,b)$-reachable, $j\le i$.
+%   If $s$ is a $T$-ancestor of $v$ then this is trivial, since $\pth_T(s,v)$ is an $(i,b)$-suitable path from $s$ to $v$.  Otherwise, $s\prec v$.
+%   Let $P$ be an $(i,b)$-suitable path from $s$ to $w$.  We claim that $P$ contains a vertex $v'$ that is incomparable to $v$.  Since $v\prec w$, the only other possibility is that $P$ contains an edge $v'w'$ with $v'\prec v$ and $v\prec w'$. If $v'w'$ is above $v$ then $v'w'$ crosses an edge of $\pth(r,v)$, which is not possible since $G$ is a non-crossing drawing.  If $v'w'$ is below $v$ then $v$ is redundant, which is not possible by the assumptions of the lemma.
+%
+%   Thus $P$ contains a vertex $v'$ that is incomparable to $v$. The path $P$ therefore consists of two subpaths $P_{sv'}$ and $P_{v'w}$ with a common endpoint $v'$.  Note that the path $P_{v'w}$ contains at least one vertex from each layer between the layer that contains $v'$ and the layer that contains $w$.  The path $\pth(v',v)$ intersects each of these layers in exactly one vertex.  Therefore, the concatenation of $P_{sv'}$ and $\pth(v',v)$ is an $(i,b)$-suitable path from $s$ to $v$.
+% \end{proof}
 
 \begin{clm}
    Let $G_C'$ be the subgraph of $G_C$ obtained by removing every $i$-redundant vertex of $G_C$.  Let $v_1\prec\cdots\prec v_r$ be be the vertices in $L_j\cap V(G_C')$.  Then $G_C'$ contains the path $v_1,\ldots,v_r$.
 \end{clm}
 
 \begin{proof}
-  Consider the vertex $v_p$ for some $p\in\{1,\ldots,r-1\}$. Some face $uv_pw$ of $G_C$ contains a horizontal line segment of positive length whose left endpoint is $v_p$.  At least one of the vertices of this triangle, say $w$ is in $L_j$. Therefore $G_C$ contains at least one edge $v_pv'$ with $v_p\prec v'$ and $v'\in L_j$.  Let $v'$ be such an edge that maximizes $v'$, with respect to $\prec$.  The existence of the edge $v_pv'$ implies that all vertices of $G_C$ in the interior of the segment $v_pv'$ are $j$-redundant and therefore $i$-redundant.  Furthermore, planarity implies that if $v'$ is $i$-redundant, then so is $v_p$, which contradicts the fact that $v_p$ is a vertex of $G_C'$.  Therefore $v'=v_{p+1}$ and $G_C'$ contains the edge $v_pv_{p+1}$ as required.  This is true for all $p\in\{1,\ldots,r-1\}$, so $v_1,\ldots,v_p$ is a path in $G_C'$.
+  Consider the vertex $v_p$ for some $p\in\{1,\ldots,r-1\}$. Some face $uv_pw$ of $G_C$ contains a horizontal line segment of positive length whose left endpoint is $v_p$.  At least one of the vertices of this face, say $w$, is in $L_j$. Therefore $G_C$ contains at least one edge $v_pv'$ with $v_p\prec v'$ and $v'\in L_j$.  Let $v'$ be such an edge that maximizes $v'$, with respect to $\prec$.  The existence of the edge $v_pv'$ implies that all vertices of $G_C$ in the interior of the segment $v_pv'$ are $j$-redundant and therefore $i$-redundant.  Furthermore, planarity implies that if $v'$ is $i$-redundant, then so is $v_p$, which contradicts the fact that $v_p$ is a vertex of $G_C'$.  Therefore $v'=v_{p+1}$ and $G_C'$ contains the edge $v_pv_{p+1}$ as required.  This is true for all $p\in\{1,\ldots,r-1\}$, so $v_1,\ldots,v_p$ is a path in $G_C'$.
 \end{proof}
 
 
@@ -455,8 +454,12 @@ Let $C$, $G_C$, $s$, $t$, and $d$ be defined as in \cref{awesome_path}, with the
 \end{proof}
 
 \begin{proof}[Proof of \cref{awesome_path}]
-  Since $G_C$ has at most $n$ vertices, \cref{bam}, with $i=\lceil 2\sqrt{n}\rceil$ implies that $G_C$ contains a path that satisfies the conditions of the lemma.
+  Since $G_C$ has at most $n$ vertices, \cref{bam}, with $i=\lceil \sqrt{2n}\rceil$ implies that $G_C$ contains a path that satisfies the conditions of the lemma.
 \end{proof}
+
+\section{Products with Paths}
+
+\section{Bounded Genus Graphs}
 
 
 \bibliographystyle{plainurlnat}
