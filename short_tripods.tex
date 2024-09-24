@@ -386,27 +386,96 @@ Consider the following relation $\prec$ over pairs of vertices in $G$. For each 
 % \end{proof}
 
 
-We say that a vertex $z\in L_j$ is \defin{$i$-redundant} if there exists an edge $vw\in E(G)\setminus E(T)$ such that $v\prec z\prec w$ and $v\in L_{i'}$ for some $i'\le i$.
+% We say that a vertex $z\in L_j$ is \defin{$i$-redundant} if there exists an edge $vw\in E(G)\setminus E(T)$ such that $v\prec z\prec w$ and $v\in L_{i'}$ for some $i'\le i$.
+%
+% \begin{clm}\label{has_descendant}
+%   If $i\ge j$, and a vertex $v\in L_j$ is not $i$-redundant then $v$ has a $T$-descendant\todo{Define $T$-descendant} in $L_i$.
+% \end{clm}
+%
+% \begin{proof}
+%   If $v$ is on the outer face of $G_C$, then the result is trivial since the two paths that define the outer face of $G_C$ are paths in $T$.\todo{This is where we assume that the BFS tree is special.}  Therefore, we may assume that $v$ is not on the outer face of $G_C$.
+%
+%   The proof is by induction on $i-j$.
+%   If $i=j$, the result is trivial since $v$ is a $T$-descendant of itself. For $i>j$, it suffices to show that $v$ has at least one non-redundant $T$-child $v'$ after which we can apply induction on $v'\in L_{j+1}$.
+%
+%   If $v$ has no child in $T$, then there is a face $vxy$ with $x\prec v\prec y$ and $x,y\in L_{j}\cup L_{j+1}$. Then $x$ and $y$ have $T$-ancestors $x'$ and $y'$ in $L_j$ (possibly $x=x'$ or $y=y'$). But this implies that $v$ is $(j+1)$-redundant, a contradiction. We now assume that $v$ has at least one child in $T$.
+%
+%   Let $v_1\prec\cdots\prec v_k$ be the $T$-children of $v$.  Note that every vertex of $G_C$ on the line segment $\overline{v_1v_k}$ is a child of $v$.  Planarity implies that if $v_1,\ldots,v_k$ are all $i$-redundant then there is a single edge $xy$ with endpoints in $L_{j+1}\cup\cdots\cup L_i$ such that $x$ has a $T$-ancestor $x'\in L_{j+1}$ with $x'\prec v_1$ and $y$ has a $T$-ancestor $y'\in L_{j+1}$ with $v_k\prec y'$. Let $x''$ be the parent of $x'$ and let $y''$ be the parent of $y'$.  Neither $x'$ nor $y'$ is a child of $v$, so $x''\neq v$ and $y''\neq v$. The edges $x'x''$ does not cross the edge $vv_1$, so $x''\prec v$.  Similarly, $v\prec y''$.  Therefore $x''\prec v\prec y''$, which implies that $v$ is $i$-redundant, a contradiction.
+% \end{proof}
 
-\begin{clm}\label{has_descendant}
-  If $i\ge j$, and a vertex $v\in L_j$ is not $i$-redundant then $v$ has a $T$-descendant\todo{Define $T$-descendant} in $L_i$.
+
+Let $C$, $G_C$, $s$, $t$, and $d$ be defined as in \cref{awesome_path}, with the restriction that the tree $T$ in \cref{awesome_path} is the tree $T$ defined above.  In all of the following, we use the convention that $s\prec t$.  We say that a vertex $u\in L_{d+i}\cap V(G_C)$ is \defin{redundant} if there exists an edge $vw\in E(G_C)\setminus E(T)$ with $v,w\in\bigcup_{j=d}^{d+i} L_i$ such that $u$ is contained in the interior of the cycle formed by $vw$ and $\pth_T(v,w)$.  Let $G'_C$ be the subgraph of $G_C$ obtained by removing every redundant vertex.
+
+\begin{clm}
+  Let $v_0\prec\cdots\prec v_{p}$ be the vertices in $L_i\cap V(G'_C)$ for some $i\ge d$.  Then, for each $\ell\in[p]$, $G'_C$ contains the edge $v_\ell v_{\ell+1}$.
 \end{clm}
 
 \begin{proof}
-  If $v$ is on the outer face of $G_C$, then the result is trivial since the two paths that define the outer face of $G_C$ are paths in $T$.\todo{This is where we assume that the BFS tree is special.}  Therefore, we may assume that $v$ is not on the outer face of $G_C$.
-
-  The proof is by induction on $i-j$.
-  If $i=j$, the result is trivial since $v$ is a $T$-descendant of itself. For $i>j$, it suffices to show that $v$ has at least one non-redundant $T$-child $v'$ after which we can apply induction on $v'\in L_{j+1}$.
-
-  If $v$ has no child in $T$, then there is a face $vxy$ with $x\prec v\prec y$ and $x,y\in L_{j}\cup L_{j+1}$. Then $x$ and $y$ have $T$-ancestors $x'$ and $y'$ in $L_j$ (possibly $x=x'$ or $y=y'$). But this implies that $v$ is $(j+1)$-redundant, a contradiction. We now assume that $v$ has at least one child in $T$.
-
-  Let $v_1\prec\cdots\prec v_k$ be the $T$-children of $v$.  Note that every vertex of $G_C$ on the line segment $\overline{v_1v_k}$ is a child of $v$.  Planarity implies that if $v_1,\ldots,v_k$ are all $i$-redundant then there is a single edge $xy$ with endpoints in $L_{j+1}\cup\cdots\cup L_i$ such that $x$ has a $T$-ancestor $x'\in L_{j+1}$ with $x'\prec v_1$ and $y$ has a $T$-ancestor $y'\in L_{j+1}$ with $v_k\prec y'$. Let $x''$ be the parent of $x'$ and let $y''$ be the parent of $y'$.  Neither $x'$ nor $y'$ is a child of $v$, so $x''\neq v$ and $y''\neq v$. The edges $x'x''$ does not cross the edge $vv_1$, so $x''\prec v$.  Similarly, $v\prec y''$.  Therefore $x''\prec v\prec y''$, which implies that $v$ is $i$-redundant, a contradiction.
+  The graph $G_C$ contains a face $v_\ell xy$ immediately to the right of $v_\ell$\todo{Explain better}.  At least one of $x$ or $y$, say $x$ is in $L_i$ and $v_\ell\prec x$.  Let $v'$ be the vertex in $N_{G_C}(v_\ell)\cap L_i$ that is maximal with respect to $\prec$.  Thus $v_\ell\prec v'$.  We claim that $v'=v_{\ell+1}$.\todo{Finish....}
 \end{proof}
 
 
-Let $C$, $G_C$, $s$, $t$, and $d$ be defined as in \cref{awesome_path}, with the restriction that the tree $T$ in \cref{awesome_path} is the tree $T$ defined above.  In all of the following, we use the convention that $s\prec t$.  A path $P$ in $G_C$ is \defin{$(i,b)$-suitable} if $V(P)\subseteq L_{d}\cup\cdots L_{d+i}$ and $|V(P)\cap L_j|\le b$ for all $j\in\N$.  A vertex $v\in V(G_C)$ is \defin{$(i,b)$-reachable} if $G_C$ contains an $(i,b)$-suitable path from $s$ to $v$.
 
-\todo[inline]{There's an annoying mismatch here, where many occurrences of $i$ and $j$ should be replaced with $i+d$ and $j+d$ since we want everything to be relative to $d=\depth_T(s)=\depth_T(t)$.}
+
+
+
+
+
+A subgraph $X$ of $G_C$ is \defin{$b$-suitable} if $V(X)\subseteq V(G_C)\cap(\bigcup_{i\ge d} L_i)$ and $|V(X)\cap L_i|\le b$, for each $i\in\N$.
+
+
+
+
+ Fix a positive integer $k\in O(\sqrt{n})$ whose precise value will be discussed later.  Observe that, if $s$ (or $t$) does not have a $T$-descendant of depth $d+k$, then there is a $2$-suitable path from $s$ to $t$ on the outer face of $G_C$.\todo{Here we assume that the paths on the outer face of $G_C$ are paths in $T$.}  We now assume that $s$ and $t$ each have $T$-descendants of $T$-depth $k$. Let $s'$ be the $T$-descendant of $s$ whose $T$-depth is $k$ that is maximum with respect to $\prec$.  Let $t'$ be the $T$-descendant of $t$ whose $T$-depth is $k$ and that is minimum with respect to $\prec$.
+
+A subgraph $X$ of $G_C$ is \defin{$(i,j,b)$-suitable} if it is $b$-suitable and $V(X)\subseteq L_{d+i}\cup\cdots L_{d+j}$.
+Let $A_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(0,i,b)$-suitable path from $s$ to $v$.  Let $\overline{A}_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(i,k,b)$-suitable path from $t'$ to $v$.
+Let $B_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(0,i,b)$-suitable path from $t$ to $v$.  Let $\overline{B}_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(i,k,b)$-suitable path from $s'$ to $v$.
+
+\begin{clm}\label{complement_connected}
+  If $A_{i,b}\cap \overline{A}_{i,b}\neq\emptyset$ or $B_{i,b}\cap \overline{B}_{i,b}\neq\emptyset$, then $G_C$ contains a $(0,k,2b+1)$-suitable path from $s$ to $t$.
+\end{clm}
+
+\begin{proof}
+  By symmetry, it suffices to consider the case where $A_{i,b}\cap \overline{A}_{i,b}\neq\emptyset$.  Choose some $v\in A_{i,b}\cap \overline{A}_{i,b}$, let $P_1$ be an $(0,i,b)$-suitable path from $s$ to $v$ and let $P_2$ be a $(i,k,b)$-suitable path from $t'$ to $v$.  Then $P_1\cup P_2$ contains a $(0,k,2b)$-suitable path $P_0$ from $s$ to $t'$.  The concatenation of $P_0$ with $\pth_T(t',t)$ is a $(0,k,2b+1)$-suitable path from $s$ to $t$.
+\end{proof}
+
+\begin{clm}\label{complement_connected}
+  If $A_{i,b}\cap {B}_{i,b}\neq\emptyset$ for some $i\in\{0,\ldots,k\}$, then $G_C$ contains a $(0,k,2b)$-suitable path from $s$ to $t$.
+\end{clm}
+
+\begin{proof}
+  Choose some $v\in A_{i,b}\cap B_{i,b}$, let $P_1$ be an $(0,i,b)$-suitable path from $s$ to $v$ and let $P_2$ be a $(0,i,b)$-suitable path from $t'$ to $v$.  Then $P_1\cup P_2$ contains a $(0,k,2b)$-suitable path from $s$ to $t$.
+\end{proof}
+
+\begin{clm}\label{complement_connected}
+  If $\overline{A}_{i,b}\cap \overline{B}_{i,b}\neq\emptyset$ for some $i\in\{0,\ldots,k\}$, then $G_C$ contains a $(0,k,2b+2)$-suitable path from $s$ to $t$.
+\end{clm}
+
+\begin{proof}
+  Choose some $v\in \overline{A}_{i,b}\cap \overline{B}_{i,b}$, let $P_1$ be an $(0,i,b)$-suitable path from $s$ to $v$ and let $P_2$ be a $(0,i,b)$-suitable path from $t'$ to $v$.  Then $\pth_T(s,s')\cup P_1\cup P_2\cup\pth_T(t',t)$ contains a $(0,k,2b+2)$-suitable path from $s$ to $t$.
+\end{proof}
+
+
+\begin{lem}
+  If $G_C$ does not contain a $(0,k,2b+2)$-suitable path from $s$ to $t$ then $|V(G_C)|\ge \alpha (k+1)^2$.
+\end{lem}
+
+\begin{proof}
+  The proof is by induction on the value of $k$.  The case $k=0$ asserts that $G[L_0]$ contains a path from $s$ to $t$ with at most $2b+2$ vertices or $L_{0+d}$ contains at least $\alpha$ vertices.
+
+\end{proof}
+
+
+
+
+
+
+
+
+
+%
+% \todo[inline]{There's an annoying mismatch here, where many occurrences of $i$ and $j$ should be replaced with $i+d$ and $j+d$ since we want everything to be relative to $d=\depth_T(s)=\depth_T(t)$.}
 
 
 % \begin{clm}
@@ -421,41 +490,41 @@ Let $C$, $G_C$, $s$, $t$, and $d$ be defined as in \cref{awesome_path}, with the
 %   Thus $P$ contains a vertex $v'$ that is incomparable to $v$. The path $P$ therefore consists of two subpaths $P_{sv'}$ and $P_{v'w}$ with a common endpoint $v'$.  Note that the path $P_{v'w}$ contains at least one vertex from each layer between the layer that contains $v'$ and the layer that contains $w$.  The path $\pth(v',v)$ intersects each of these layers in exactly one vertex.  Therefore, the concatenation of $P_{sv'}$ and $\pth(v',v)$ is an $(i,b)$-suitable path from $s$ to $v$.
 % \end{proof}
 
-\begin{clm}
-   Let $G_C'$ be the subgraph of $G_C$ obtained by removing every $i$-redundant vertex of $G_C$.  Let $v_1\prec\cdots\prec v_r$ be be the vertices in $L_j\cap V(G_C')$.  Then $G_C'$ contains the path $v_1,\ldots,v_r$.
-\end{clm}
-
-\begin{proof}
-  Consider the vertex $v_p$ for some $p\in\{1,\ldots,r-1\}$. Some face $uv_pw$ of $G_C$ contains a horizontal line segment of positive length whose left endpoint is $v_p$.  At least one of the vertices of this face, say $w$, is in $L_j$. Therefore $G_C$ contains at least one edge $v_pv'$ with $v_p\prec v'$ and $v'\in L_j$.  Let $v'$ be such an edge that maximizes $v'$, with respect to $\prec$.  The existence of the edge $v_pv'$ implies that all vertices of $G_C$ in the interior of the segment $v_pv'$ are $j$-redundant and therefore $i$-redundant.  Furthermore, planarity implies that if $v'$ is $i$-redundant, then so is $v_p$, which contradicts the fact that $v_p$ is a vertex of $G_C'$.  Therefore $v'=v_{p+1}$ and $G_C'$ contains the edge $v_pv_{p+1}$ as required.  This is true for all $p\in\{1,\ldots,r-1\}$, so $v_1,\ldots,v_p$ is a path in $G_C'$.
-\end{proof}
-
-
-\begin{clm}
-   Let $G_C'$ be the subgraph of $G_C$ obtained by removing every $i$-redundant vertex of $G_C$.  Let $v_1\prec\cdots\prec v_r$ be be the vertices in $L_j\cap V(G_C')$.  Then $G_C'$ contains the path $v_1,\ldots,v_r$.
-\end{clm}
-
-\begin{proof}
-  Consider the vertex $v_p$ for some $p\in\{1,\ldots,r-1\}$. Some face $uv_pw$ of $G_C$ contains a horizontal line segment of positive length whose left endpoint is $v_p$.  At least one of the vertices of this triangle, say $w$ is in $L_j$. Therefore $G_C$ contains at least one edge $v_pv'$ with $v_p\prec v'$ and $v'\in L_j$.  Let $v'$ be such an edge that maximizes $v'$, with respect to $\prec$.  The existence of the edge $v_pv'$ implies that all vertices of $G_C$ in the interior of the segment $v_pv'$ are $j$-redundant and therefore $i$-redundant.  Furthermore, planarity implies that if $v'$ is $i$-redundant, then so is $v_p$, which contradicts the fact that $v_p$ is a vertex of $G_C'$.  Therefore $v'=v_{p+1}$ and $G_C'$ contains the edge $v_pv_{p+1}$ as required.  This is true for all $p\in\{1,\ldots,r-1\}$, so $v_1,\ldots,v_p$ is a path in $G_C'$.
-\end{proof}
-
-
-\begin{clm}\label{bam}
-  Let $G_C'$ be the subgraph of $G_C$ obtained by removing every $i$-redundant vertex of $G_C$.  Then $t$ is $(i,3)$-reachable or $|V(G_C')|\ge i^2/2$.
-\end{clm}
-
-\begin{proof}
-  Starting from $v_0:=s\in L_d$, construct a path as follows:  Suppose that after $j$ iterations, we have constructed a path from $s$ to a vertex $v_j\in L_{d+j}$ that contains at most two vertices from each of $L_d,\ldots,L_{d+j-1}$ and contains only the vertex $v_j\in L_j$.  If $v_j$ has neighbour $w_j\in L_{d+j}$ with $v_j\prec w_j$ then add $w_j$ to the path.  Then add any $T$-child $v_{j+1}$ of $w_j$.  If $v_j$ has no such neighbour, then $v_j$ is a $T$-descendant of $t$ and we complete the path to $t$ with $\pth_T(v_j,t)$.
-
-  If this process completes in at most $i$ iterations then the resulting path is $(i,3)$-suitable.  Otherwise, by \cref{has_descendant}, the vertex $v_j$ has a $T$-descendant in each of $L_{j+1},\ldots,L_i$. It follows immediately from the definitions that $v_0\prec\cdots\prec v_i$, so none of these vertices is a $T$-ancestor of any other.  Therefore, the total number $T$-descendants of $v_0,\ldots,v_i$ is at least
-  \[
-    \sum_{j=0}^i (i-j+1) = \sum_{j=1}^{i+1} j = (i+1)(i+2)/2 > i^2/2 \enspace .
-    \qedhere
-  \]
-\end{proof}
-
-\begin{proof}[Proof of \cref{awesome_path}]
-  Since $G_C$ has at most $n$ vertices, \cref{bam}, with $i=\lceil \sqrt{2n}\rceil$ implies that $G_C$ contains a path that satisfies the conditions of the lemma.
-\end{proof}
+% \begin{clm}
+%    Let $G_C'$ be the subgraph of $G_C$ obtained by removing every $i$-redundant vertex of $G_C$.  Let $v_1\prec\cdots\prec v_r$ be be the vertices in $L_j\cap V(G_C')$.  Then $G_C'$ contains the path $v_1,\ldots,v_r$.
+% \end{clm}
+%
+% \begin{proof}
+%   Consider the vertex $v_p$ for some $p\in\{1,\ldots,r-1\}$. Some face $uv_pw$ of $G_C$ contains a horizontal line segment of positive length whose left endpoint is $v_p$.  At least one of the vertices of this face, say $w$, is in $L_j$. Therefore $G_C$ contains at least one edge $v_pv'$ with $v_p\prec v'$ and $v'\in L_j$.  Let $v'$ be such an edge that maximizes $v'$, with respect to $\prec$.  The existence of the edge $v_pv'$ implies that all vertices of $G_C$ in the interior of the segment $v_pv'$ are $j$-redundant and therefore $i$-redundant.  Furthermore, planarity implies that if $v'$ is $i$-redundant, then so is $v_p$, which contradicts the fact that $v_p$ is a vertex of $G_C'$.  Therefore $v'=v_{p+1}$ and $G_C'$ contains the edge $v_pv_{p+1}$ as required.  This is true for all $p\in\{1,\ldots,r-1\}$, so $v_1,\ldots,v_p$ is a path in $G_C'$.
+% \end{proof}
+%
+%
+% \begin{clm}
+%    Let $G_C'$ be the subgraph of $G_C$ obtained by removing every $i$-redundant vertex of $G_C$.  Let $v_1\prec\cdots\prec v_r$ be be the vertices in $L_j\cap V(G_C')$.  Then $G_C'$ contains the path $v_1,\ldots,v_r$.
+% \end{clm}
+%
+% \begin{proof}
+%   Consider the vertex $v_p$ for some $p\in\{1,\ldots,r-1\}$. Some face $uv_pw$ of $G_C$ contains a horizontal line segment of positive length whose left endpoint is $v_p$.  At least one of the vertices of this triangle, say $w$ is in $L_j$. Therefore $G_C$ contains at least one edge $v_pv'$ with $v_p\prec v'$ and $v'\in L_j$.  Let $v'$ be such an edge that maximizes $v'$, with respect to $\prec$.  The existence of the edge $v_pv'$ implies that all vertices of $G_C$ in the interior of the segment $v_pv'$ are $j$-redundant and therefore $i$-redundant.  Furthermore, planarity implies that if $v'$ is $i$-redundant, then so is $v_p$, which contradicts the fact that $v_p$ is a vertex of $G_C'$.  Therefore $v'=v_{p+1}$ and $G_C'$ contains the edge $v_pv_{p+1}$ as required.  This is true for all $p\in\{1,\ldots,r-1\}$, so $v_1,\ldots,v_p$ is a path in $G_C'$.
+% \end{proof}
+%
+%
+% \begin{clm}\label{bam}
+%   Let $G_C'$ be the subgraph of $G_C$ obtained by removing every $i$-redundant vertex of $G_C$.  Then $t$ is $(i,3)$-reachable or $|V(G_C')|\ge i^2/2$.
+% \end{clm}
+%
+% \begin{proof}
+%   Starting from $v_0:=s\in L_d$, construct a path as follows:  Suppose that after $j$ iterations, we have constructed a path from $s$ to a vertex $v_j\in L_{d+j}$ that contains at most two vertices from each of $L_d,\ldots,L_{d+j-1}$ and contains only the vertex $v_j\in L_j$.  If $v_j$ has neighbour $w_j\in L_{d+j}$ with $v_j\prec w_j$ then add $w_j$ to the path.  Then add any $T$-child $v_{j+1}$ of $w_j$.  If $v_j$ has no such neighbour, then $v_j$ is a $T$-descendant of $t$ and we complete the path to $t$ with $\pth_T(v_j,t)$.
+%
+%   If this process completes in at most $i$ iterations then the resulting path is $(i,3)$-suitable.  Otherwise, by \cref{has_descendant}, the vertex $v_j$ has a $T$-descendant in each of $L_{j+1},\ldots,L_i$. It follows immediately from the definitions that $v_0\prec\cdots\prec v_i$, so none of these vertices is a $T$-ancestor of any other.  Therefore, the total number $T$-descendants of $v_0,\ldots,v_i$ is at least
+%   \[
+%     \sum_{j=0}^i (i-j+1) = \sum_{j=1}^{i+1} j = (i+1)(i+2)/2 > i^2/2 \enspace .
+%     \qedhere
+%   \]
+% \end{proof}
+%
+% \begin{proof}[Proof of \cref{awesome_path}]
+%   Since $G_C$ has at most $n$ vertices, \cref{bam}, with $i=\lceil \sqrt{2n}\rceil$ implies that $G_C$ contains a path that satisfies the conditions of the lemma.
+% \end{proof}
 
 \section{Products with Paths}
 
