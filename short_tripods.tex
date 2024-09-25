@@ -4,23 +4,8 @@
 \usepackage{paralist}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{bbm}  % needed for \mathbbm{1}
-% \usepackage{logix}
-\usepackage{halloweenmath}
-\usepackage{stmaryrd}
-
 \usepackage{todonotes}
-\usepackage{tcolorbox}
-\usepackage{booktabs}
-\usepackage{multirow}
-\usepackage{comment}
-
 \usepackage{thm-restate}
-
-
-
-\newenvironment{clmproof}{\noindent\emph{Proof of Claim:}}{\hfill\rule{1ex}{1ex}}
-
 \usepackage[longnamesfirst,numbers,sort&compress]{natbib}
 
 \usepackage[mathlines]{lineno}
@@ -202,23 +187,20 @@ The quack $(\mathcal{B},\mathcal{L})$ is $(t,w,k)$-good if it is $(t,w)$-good an
 The proof of \cref{three_w_csqrtn_quack} makes use of the following lemma, whose proof is the subject of \cref{crux_section}.
 
 \begin{lem}\label{awesome_path}
-  Let $G$ be an $n$-vertex triangulation and let $C$ be a cycle in $G$ whose boundary consists of an edge $e$ of $G$, a vertex $\lambda$ of $G$, and a shortest path from each of the endpoints of $e$ to $\lambda$.  Let $G_C$ be the subgraph of $G$ induced by the vertices in $C$ and the vertices of $G$ in the interior of $C$.  Let $s$ and $t$ be any two vertices of $C$ with $\dist(s,\lambda)=\dist(t,\lambda)=:d$.  Then $G_C$ contains a path $Q$ with endpoints $s$ and $t$ such that, for each $i\in\N$,
+  Let $G$ be an $n$-vertex triangulation and let $r$ be a vertex on the outer face of $G$.  Then there exists an $r$-rooted BFS tree\todo{Define.} $T$ of $G$ such that the following holds for every edge $xy\in E(G)\setminus E(T)$: Let $C$ be the cycle formed by $E(T)\cup\{xy\}$ and let $G_{C}$ be the subgraph of $G$ induced by the vertices in $C$ and the vertices of $G$ in the interior of $C$.  Let $s$ and $t$ be any two vertices of $C$ with $\depth_T(s)=\depth_T(t)=:d$.  Then $G_C$ contains a path $Q$ with endpoints $s$ and $t$ such that, for each $i\in\N$,
     \[  |\{x\in V(Q):\dist_G(x,\lambda)=i\}| \le
       \begin{cases}
         0 & \text{if $i < d$} \\
-        3 & \text{if $d\le i < i+\sqrt{2n}$} \\
+        3 & \text{if $d\le 2r+2 < i+\sqrt{2n}$} \\
         0 & \text{if $i \ge \sqrt{2n}$} \\
       \end{cases}
     \]
 \end{lem}
 
-\todo[inline]{Our current proof requires that the two shortest paths in $G$ comes from a particular $\lambda$-rooted BFS tree of $G$ (that uses only clean edges in the ordered concentric representation).  This is enough to prove \cref{main_thm}, or we can use this weaker lemma to prove \cref{awesome_path}.}
-
-
 
 \begin{proof}[Proof of \cref{three_w_csqrtn_quack}]
   We will construct a  $(3,w,3\beta\sqrt{n})$-good quack $(\mathcal{B},\mathcal{L})$.
-  Add a dummy vertex $r$ in the outer face of $G$ that is adjacent to the three vertices on the outer face of $G$ and call the resulting $(n+1)$-vertex triangulation $G'$.  Fix a shortest path tree $T$ of $G'$ rooted at $r$, so that $T$ is a spanning tree of $G'$ with $\dist_T(v,r)=\dist_{G'}(v,r)$ for each $v\in V(G)$.  For each $i\in\N$, let $L_i:=\{v\in V(G):\dist_T(v,r)-1=i\}$.  Then $\mathcal{L}:=L_0,\ldots,L_{h-1}$ is the layering of $G$ that we will use in our quack.
+  Add a dummy vertex $r$ in the outer face of $G$ that is adjacent to the three vertices on the outer face of $G$ and call the resulting $(n+1)$-vertex triangulation $G'$.  Let $T$ be the $r$-rooted BFS tree of $G$ guaranteed by \cref{awesome_path}.  For each $i\in\N$, let $L_i:=\{v\in V(G):\depth_T(v)-1=i\}$.  Then $\mathcal{L}:=L_0,\ldots,L_{h-1}$ is the layering of $G$ that we will use in our quack.
 
   We will construct $\mathcal{B}:=B_0,\ldots,B_{p-1}$ iteratively, beginning with $B_0:=L_0$.  When constructing $B_i$ we will ensure that, in addition to the conditions imposed $(3,w,c\sqrt{n})$-goodness, $B_i$ satisfies the following structural invariants:
   \begin{compactenum}[({struct}-a)]
@@ -308,11 +290,14 @@ The proof of \cref{three_w_csqrtn_quack} makes use of the following lemma, whose
 \section{Proof of \cref{awesome_path}}
 \label{crux_section}
 
-In this section, we prove \cref{awesome_path}.  Our approach is to show that $G_C$ contains a grid-like subgraph $G_C'$ where each layer of the grid contains vertices from the corresponding layer in the $\lambda$-rooted BFS layering of $G_C$. The vertices $s$ and $t$ are the leftmost and rightmost vertices in the top layer of $G_C'$.  Once we find this structure, finding the path from $s$ to $t$ is easy.  We take the zig-zag path that begins at $v_0:=s$ (in the leftmost column) and walk along the diagonal of the grid until reaching the rightmost column, then we take the vertical path in the rightmost column to reach $t$. The first part of this path, $v_0,w_0,v_1,w_1,\ldots,v_i,w_i$ uses at most two vertices, $v_j$ and $w_j$ in layer $j$ for each $j\in\{0,\ldots,i\}$ and uses at most two vertices, $w_j$ and $v_{j+1}$, in column $j+1$, for each $j\in\{0,\ldots,i-1\}$.
+% In this section, we prove \cref{awesome_path}.  Our approach is to show that $G_C$ contains a grid-like subgraph $G_C'$ where each layer of the grid contains vertices from the corresponding layer in the $\lambda$-rooted BFS layering of $G_C$. The vertices $s$ and $t$ are the leftmost and rightmost vertices in the top layer of $G_C'$.  Once we find this structure, finding the path from $s$ to $t$ is easy.  We take the zig-zag path that begins at $v_0:=s$ (in the leftmost column) and walk along the diagonal of the grid until reaching the rightmost column, then we take the vertical path in the rightmost column to reach $t$. The first part of this path, $v_0,w_0,v_1,w_1,\ldots,v_i,w_i$ uses at most two vertices, $v_j$ and $w_j$ in layer $j$ for each $j\in\{0,\ldots,i\}$ and uses at most two vertices, $w_j$ and $v_{j+1}$, in column $j+1$, for each $j\in\{0,\ldots,i-1\}$.
+%
+% The second part of the path uses at most $1$ vertex in each of these layers, so the path uses at most $3$ vertices in each of the layers $0,\ldots,i$. To obtain a bound of $O(\sqrt{n})$ on the number, $i$, of layers, we will argue that $v_j$ is above at least $i-j$ vertices in its column.  Since $v_0,\ldots,v_i$ are all in different columns this implies that $G'_C$ contains at least $\sum_{j=0}^i(i-j+1)>i^2/2$ vertices.  Thus $i^2/2 < n$, so $i< \sqrt{2n}$.
 
-The second part of the path uses at most $1$ vertex in each of these layers, so the path uses at most $3$ vertices in each of the layers $0,\ldots,i$. To obtain a bound of $O(\sqrt{n})$ on the number, $i$, of layers, we will argue that $v_j$ is above at least $i-j$ vertices in its column.  Since $v_0,\ldots,v_i$ are all in different columns this implies that $G'_C$ contains at least $\sum_{j=0}^i(i-j+1)>i^2/2$ vertices.  Thus $i^2/2 < n$, so $i< \sqrt{2n}$.
+% Let $G$ be a connected planar graph and let $r$ be a vertex of $G$. To help us find the grid-like structure in $G_C$ we make use of the following concept from graph drawing.
 
-Let $G$ be a connected planar graph and let $r$ be a vertex of $G$. To help us find the grid-like structure in $G_C$ we make use of the following concept from graph drawing. An \defin{ordered concentric representation} of $G$ with center $r$ is a non-crossing drawing of $G$ with $r$ on the outer face that has following properties:
+
+An \defin{ordered concentric representation} of $G$ with center $r$ is a non-crossing drawing of $G$ with $r$ on the outer face that has following properties:
 \begin{compactenum}[(i)]
   \item For each $i\in\N$, the vertices in $L_i:=\{v\in V(G):\dist_G(v,r)=i\}$ are drawn on the line $y=-i$.
   \item For each edge $vw$ of $G$ with $v,w\in L_i$ for some $i$, the edge $vw$ is drawn as a curve whose interior is contained in the halfplane $y<-i$.
@@ -321,13 +306,13 @@ Let $G$ be a connected planar graph and let $r$ be a vertex of $G$. To help us f
 
 \citet{pupyrev:mixed} proves that every connected planar graph has a such a representation:
 
-\begin{lem}\label{pupyrev}
+\begin{lem}[\citet{pupyrev:mixed}]\label{pupyrev}
   For every connected planar graph $G$ and every vertex $r$ of $G$, there exists an ordered concentric representation of $G$ with center $r$.
 \end{lem}
 
 From this point on, we fix a vertex $r$ of our triangulation $G$ and an ordered concentric representation of $G$ centered at $r$.  We do not distinguish between a vertex and the point that represents it or between an edge and the curve that represents it.  We use the words ``left'' and ``right'' to compare two vertices on the same layer in the natural way.  We use ``above'' and ``below'' to compare layers or to compare a vertex to a layer.
 
-We say that an edge $vw$ of $G$ is a \defin{clean} edge if, for some $i$, $v\in L_i$, $w\in L_{i+1}$ and the interior of $vw$ is entirely contained in the strip $-i < y -(i-1)$.  The vertices $v$ and $w$ are called the \defin{upper} and \defin{lower} endpoints of $vw$.  The following strengthening of \cref{pupyrev} will allow us to build a spanning tree consisting entirely of clean edges.  Ultimately, vertical paths in this spanning tree will be used to construct columns in the grid-like graph $G_C'$.
+We say that an edge $vw$ of $G$ is a \defin{clean} edge if, for some $i$, $v\in L_i$, $w\in L_{i+1}$ and the interior of $vw$ is entirely contained in the strip $-i < y < -(i-1)$.  The vertices $v$ and $w$ are called the \defin{upper} and \defin{lower} endpoints of $vw$.  The following strengthening of \cref{pupyrev} will allow us to build a spanning tree consisting entirely of clean edges.
 
 \begin{lem}\label{clean_edge}
   For every triangulation $G$ and every vertex $r$ of $G$, there exists an ordered concentric representation of $G$ with center $r$ such that, for each vertex $w\neq r$, the vertex $w$ is the lower endpoint of at least one clean edge.
@@ -356,13 +341,14 @@ Consider the following relation $\prec$ over pairs of vertices in $G$. For each 
 %
 % Let $\prec$ be the transitive closure of $\prec_0$.
 
-\begin{obs}
+\begin{obs}\label{ancestor_or_comparable}
   For any two vertices $v,w\in V(G)$, exactly one of the following is true:
   \begin{compactenum}
     \item $v$ is a $T$-ancestor of $w$ or $w$ is a $T$-ancestor of $v$; or
     \item $v\prec w$ or $w\prec v$.
   \end{compactenum}
 \end{obs}
+If $v$ and $w$ satisfy the first part of \cref{ancestor_or_comparable}, then we write $v\preceq w$ and $w\preceq v$.
 
 % \begin{clm}\label{partial_order}
 %   The pair $(V(G),\prec)$ is a strict partial order.
@@ -411,59 +397,48 @@ Let $C$, $G_C$, $s$, $t$, and $d$ be defined as in \cref{awesome_path}, with the
 \end{clm}
 
 \begin{proof}
-  The graph $G_C$ contains a face $v_\ell xy$ immediately to the right of $v_\ell$\todo{Explain better}.  At least one of $x$ or $y$, say $x$ is in $L_i$ and $v_\ell\prec x$.  Let $v'$ be the vertex in $N_{G_C}(v_\ell)\cap L_i$ that is maximal with respect to $\prec$.  Thus $v_\ell\prec v'$.  We claim that $v'=v_{\ell+1}$.\todo{Finish....}
+  First argue that $N_{G_C}(v_\ell)\cap L_i$ contains at least one vertex to the right of $v_\ell$, and let $v'$ be the rightmost vertex in $N_{G_C}(v_\ell)\cap L_i$.  We claim that $v'=v_{\ell+1}$.\todo{Finish....}
 \end{proof}
 
+Let $p$ be a vertex in $V(G_C')\cap L_i$ and $q$ be a vertex in $V(G_C')\cap L_j$, for $j\ge i$.  A path $P$ from $p$ to $q$ is \defin{$(\alpha,\beta,\gamma)$-suitable} if
+\[
+   |V(P)\cap L_\ell|
+    \le
+      \begin{cases}
+        \alpha & \text{if $\ell = i$} \\
+        \beta & \text{if $i < \ell < j$} \\
+        \gamma & \text{if $\ell = j$} \\
+        0 & \text{otherwise}
+      \end{cases}
+\]
 
+Fix an integer $k\in O(\sqrt{n})$ to be discussed shortly.  If $s$ or $t$ has no $T$-descendant in $L_{i+k-1}$ then the path from $s$ to $t$ in $C$ that contains $xy$ satisfies the requirements of \cref{awesome_path}, and there is nothing more to do.  Otherwise, let $\overline{t}$ be the rightmost $T$-descendant of $s$ in $L_{d+k-1}$ and let $\overline{s}$ be the leftmost $T$-descendant of $t$ in $L_{d+k-1}$.
 
-
-
-
-
-
-A subgraph $X$ of $G_C$ is \defin{$b$-suitable} if $V(X)\subseteq V(G_C)\cap(\bigcup_{i\ge d} L_i)$ and $|V(X)\cap L_i|\le b$, for each $i\in\N$.
-
-
-
-
- Fix a positive integer $k\in O(\sqrt{n})$ whose precise value will be discussed later.  Observe that, if $s$ (or $t$) does not have a $T$-descendant of depth $d+k$, then there is a $2$-suitable path from $s$ to $t$ on the outer face of $G_C$.\todo{Here we assume that the paths on the outer face of $G_C$ are paths in $T$.}  We now assume that $s$ and $t$ each have $T$-descendants of $T$-depth $k$. Let $s'$ be the $T$-descendant of $s$ whose $T$-depth is $k$ that is maximum with respect to $\prec$.  Let $t'$ be the $T$-descendant of $t$ whose $T$-depth is $k$ and that is minimum with respect to $\prec$.
-
-A subgraph $X$ of $G_C$ is \defin{$(i,j,b)$-suitable} if it is $b$-suitable and $V(X)\subseteq L_{d+i}\cup\cdots L_{d+j}$.
-Let $A_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(0,i,b)$-suitable path from $s$ to $v$.  Let $\overline{A}_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(i,k,b)$-suitable path from $t'$ to $v$.
-Let $B_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(0,i,b)$-suitable path from $t$ to $v$.  Let $\overline{B}_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(i,k,b)$-suitable path from $s'$ to $v$.
-
-\begin{clm}\label{complement_connected}
-  If $A_{i,b}\cap \overline{A}_{i,b}\neq\emptyset$ or $B_{i,b}\cap \overline{B}_{i,b}\neq\emptyset$, then $G_C$ contains a $(0,k,2b+1)$-suitable path from $s$ to $t$.
-\end{clm}
-
-\begin{proof}
-  By symmetry, it suffices to consider the case where $A_{i,b}\cap \overline{A}_{i,b}\neq\emptyset$.  Choose some $v\in A_{i,b}\cap \overline{A}_{i,b}$, let $P_1$ be an $(0,i,b)$-suitable path from $s$ to $v$ and let $P_2$ be a $(i,k,b)$-suitable path from $t'$ to $v$.  Then $P_1\cup P_2$ contains a $(0,k,2b)$-suitable path $P_0$ from $s$ to $t'$.  The concatenation of $P_0$ with $\pth_T(t',t)$ is a $(0,k,2b+1)$-suitable path from $s$ to $t$.
-\end{proof}
-
-\begin{clm}\label{complement_connected}
-  If $A_{i,b}\cap {B}_{i,b}\neq\emptyset$ for some $i\in\{0,\ldots,k\}$, then $G_C$ contains a $(0,k,2b)$-suitable path from $s$ to $t$.
-\end{clm}
-
-\begin{proof}
-  Choose some $v\in A_{i,b}\cap B_{i,b}$, let $P_1$ be an $(0,i,b)$-suitable path from $s$ to $v$ and let $P_2$ be a $(0,i,b)$-suitable path from $t'$ to $v$.  Then $P_1\cup P_2$ contains a $(0,k,2b)$-suitable path from $s$ to $t$.
-\end{proof}
-
-\begin{clm}\label{complement_connected}
-  If $\overline{A}_{i,b}\cap \overline{B}_{i,b}\neq\emptyset$ for some $i\in\{0,\ldots,k\}$, then $G_C$ contains a $(0,k,2b+2)$-suitable path from $s$ to $t$.
-\end{clm}
-
-\begin{proof}
-  Choose some $v\in \overline{A}_{i,b}\cap \overline{B}_{i,b}$, let $P_1$ be an $(0,i,b)$-suitable path from $s$ to $v$ and let $P_2$ be a $(0,i,b)$-suitable path from $t'$ to $v$.  Then $\pth_T(s,s')\cup P_1\cup P_2\cup\pth_T(t',t)$ contains a $(0,k,2b+2)$-suitable path from $s$ to $t$.
-\end{proof}
-
+We will prove the following lemma, from which \cref{awesome_path} follows quickly:
 
 \begin{lem}
-  If $G_C$ does not contain a $(0,k,2b+2)$-suitable path from $s$ to $t$ then $|V(G_C)|\ge \alpha (k+1)^2$.
+  At least one of the following is true:
+  \begin{compactenum}[(i)]
+    \item $G_C$ contains a $(?,2?-1,?)$-suitable path from $s$ to $\overline{s}$;
+    \item $G_C$ contains a $(?,2?-1,?)$-suitable path from $\overline{t}$ to $t$; or
+    \item $|V(G_C)|\ge k^2$.
+  \end{compactenum}
 \end{lem}
 
 \begin{proof}
-  The proof is by induction on the value of $k$.  The case $k=0$ asserts that $G[L_0]$ contains a path from $s$ to $t$ with at most $2b+2$ vertices or $L_{0+d}$ contains at least $\alpha$ vertices.
+  For each $\ell\in\{d,\ldots,d+k-2\}$,
+  \begin{compactitem}
+    \item Let $\overline{s}_\ell$ be the rightmost vertex in $L_\ell$ such that $G_C$ contains a $(?,2?-1,?)$-suitable path from $s$ to $\overline{s}_\ell$.
+    \item Let $\overline{s}_\ell$ be the leftmost vertex in $L_{\ell+1}$ such that $G_C$ contains a $(?,2?-1,?)$-suitable path from $\overline{s}_\ell$ to $\overline{s}$.
+    \item Let $\overline{t}_\ell$ be the leftmost vertex in $L_\ell$ such that $G_C$ contains a $(?,2?-1,?)$-suitable path from $\overline{t}_\ell$ to $t$.
+    \item Let $t_\ell$ be the rightmost vertex in $L_{\ell+1}$ such that $G_C$ contains a $(?,2?-1,?)$-suitable path from $\overline{t}$ to $t_{\ell}$.
+  \end{compactitem}
 
+  If, for some $\ell$, $s_\ell\preceq \overline{s}_\ell$, then $G_C$ contains a $(?,2?-1,?)$-suitable path from $s$ to the $T$-parent of $s_\ell$.  Concatenating this path and the $(?,2?-1,?)$-suitable path from $s_\ell$ to $\overline{s}$ gives a $(?,2?-1,?)$-suitable path from $s$ to $\overline{s}$.  Therefore, we may assume that $\overline{s}_\ell \prec s_\ell$ for all $\ell\in[d+k-1]$.
+
+  Let $\overline{s}_\ell'$ be the vertex in $L_i$ immediately to the right of $\overline{s}_\ell$.  By \cref{level_edges}, $\overline{s}_\ell\overline{s}_\ell'$ is an edge of $G_C'$.  Therefore $G_C'$ contains a path $P_0$ from $s$ to $\overline{s}_\ell'$ that is almost $(?,2?-1,?+1)$-suitable.  Similarly, $G_C'$ contains a $(?+1,2?-1,?)$-suitable path $P_1$ from the vertex $s'_\ell$ in $L_{\ell+1}$ immediately to the left of $s_\ell$ to $\overline{s}$.  If $s'_\ell \prec \overline{s}_\ell'$, $G_C$ contains a $(?,2?-1,?)$-suitable path from $s$ to $\overline{s}$\todo{requires $2?-1 \ge ?+1$}.  Therefore, we may assume that $\overline{s}_\ell'\prec s_{\ell}'$ for each $\ell\in[d+k-1]$.
+
+  \todo[inline]{Figure out how to deal with the fact that we will end up double-counting the common ancestors of $\overline{t}_\ell$ and $\overline{s}_\ell$.}
 \end{proof}
 
 
@@ -471,6 +446,59 @@ Let $B_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there
 
 
 
+%
+%
+%
+% A subgraph $X$ of $G_C$ is \defin{$b$-suitable} if $V(X)\subseteq V(G_C)\cap(\bigcup_{i\ge d} L_i)$ and $|V(X)\cap L_i|\le b$, for each $i\in\N$.
+%
+%
+%
+%
+%  Fix a positive integer $k\in O(\sqrt{n})$ whose precise value will be discussed later.  Observe that, if $s$ (or $t$) does not have a $T$-descendant of depth $d+k$, then there is a $2$-suitable path from $s$ to $t$ on the outer face of $G_C$.\todo{Here we assume that the paths on the outer face of $G_C$ are paths in $T$.}  We now assume that $s$ and $t$ each have $T$-descendants of $T$-depth $k$. Let $s'$ be the $T$-descendant of $s$ whose $T$-depth is $k$ that is maximum with respect to $\prec$.  Let $t'$ be the $T$-descendant of $t$ whose $T$-depth is $k$ and that is minimum with respect to $\prec$.
+%
+% A subgraph $X$ of $G_C$ is \defin{$(i,j,b)$-suitable} if it is $b$-suitable and $V(X)\subseteq L_{d+i}\cup\cdots L_{d+j}$.
+% Let $A_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(0,i,b)$-suitable path from $s$ to $v$.  Let $\overline{A}_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(i,k,b)$-suitable path from $t'$ to $v$.
+% Let $B_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(0,i,b)$-suitable path from $t$ to $v$.  Let $\overline{B}_{i,b}$ be the set of vertices $v$ in $G_{C}$ with the property that there exists a $(i,k,b)$-suitable path from $s'$ to $v$.
+%
+% \begin{clm}\label{complement_connected}
+%   If $A_{i,b}\cap \overline{A}_{i,b}\neq\emptyset$ or $B_{i,b}\cap \overline{B}_{i,b}\neq\emptyset$, then $G_C$ contains a $(0,k,2b+1)$-suitable path from $s$ to $t$.
+% \end{clm}
+%
+% \begin{proof}
+%   By symmetry, it suffices to consider the case where $A_{i,b}\cap \overline{A}_{i,b}\neq\emptyset$.  Choose some $v\in A_{i,b}\cap \overline{A}_{i,b}$, let $P_1$ be an $(0,i,b)$-suitable path from $s$ to $v$ and let $P_2$ be a $(i,k,b)$-suitable path from $t'$ to $v$.  Then $P_1\cup P_2$ contains a $(0,k,2b)$-suitable path $P_0$ from $s$ to $t'$.  The concatenation of $P_0$ with $\pth_T(t',t)$ is a $(0,k,2b+1)$-suitable path from $s$ to $t$.
+% \end{proof}
+%
+% \begin{clm}\label{complement_connected}
+%   If $A_{i,b}\cap {B}_{i,b}\neq\emptyset$ for some $i\in\{0,\ldots,k\}$, then $G_C$ contains a $(0,k,2b)$-suitable path from $s$ to $t$.
+% \end{clm}
+%
+% \begin{proof}
+%   Choose some $v\in A_{i,b}\cap B_{i,b}$, let $P_1$ be an $(0,i,b)$-suitable path from $s$ to $v$ and let $P_2$ be a $(0,i,b)$-suitable path from $t'$ to $v$.  Then $P_1\cup P_2$ contains a $(0,k,2b)$-suitable path from $s$ to $t$.
+% \end{proof}
+%
+% \begin{clm}\label{complement_connected}
+%   If $\overline{A}_{i,b}\cap \overline{B}_{i,b}\neq\emptyset$ for some $i\in\{0,\ldots,k\}$, then $G_C$ contains a $(0,k,2b+2)$-suitable path from $s$ to $t$.
+% \end{clm}
+%
+% \begin{proof}
+%   Choose some $v\in \overline{A}_{i,b}\cap \overline{B}_{i,b}$, let $P_1$ be an $(0,i,b)$-suitable path from $s$ to $v$ and let $P_2$ be a $(0,i,b)$-suitable path from $t'$ to $v$.  Then $\pth_T(s,s')\cup P_1\cup P_2\cup\pth_T(t',t)$ contains a $(0,k,2b+2)$-suitable path from $s$ to $t$.
+% \end{proof}
+%
+%
+% \begin{lem}
+%   If $G_C$ does not contain a $(0,k,2b+2)$-suitable path from $s$ to $t$ then $|V(G_C)|\ge \alpha (k+1)^2$.
+% \end{lem}
+%
+% \begin{proof}
+%   The proof is by induction on the value of $k$.  The case $k=0$ asserts that $G[L_0]$ contains a path from $s$ to $t$ with at most $2b+2$ vertices or $L_{0+d}$ contains at least $\alpha$ vertices.
+%
+% \end{proof}
+%
+%
+%
+%
+%
+%
 
 
 
